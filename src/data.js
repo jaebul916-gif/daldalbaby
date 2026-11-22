@@ -1,8 +1,8 @@
 /* ===== 설정 =====
    COUPANG_LINKS: 파트너스 대시보드에서 만든 상품별 단축링크를 "시기id-상품key" 에 넣으면 수수료가 붙어요. 비어 있으면 일반 검색으로 연결돼요. */
 /* Supabase: 공개(publishable) 키라 브라우저 코드에 넣어도 괜찮아요. secret 키는 절대 넣지 마세요. */
-const SUPABASE_URL = "https://cgvhekywavsfzurgtnqn.supabase.co";
-const SUPABASE_KEY = "sb_publishable_oXE78mym3EOSzItfMh2xDA_Ph7xBkeM";
+const SUPABASE_URL = "https://vzozcsrmwdgsobyvnbjl.supabase.co";
+const SUPABASE_KEY = "sb_publishable_QjyTNDba9BCUz_hX_rpjlQ_GWpWiII8";
 
 const COUPANG_LINKS = {
   // "m0-bottle": "https://link.coupang.com/a/xxxxxx",

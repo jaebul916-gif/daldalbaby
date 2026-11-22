@@ -47,7 +47,7 @@ cd dist && python3 -m http.server 8000
 1. 이 폴더를 GitHub 저장소의 main 브랜치에 올려요.
 2. 저장소 **Settings → Pages → Build and deployment → Source**를 **GitHub Actions**로 바꿔요.
 3. **Settings → Secrets and variables → Actions → New repository secret**에서 두 개를 등록해요.
-   - `SUPABASE_URL`: `https://cgvhekywavsfzurgtnqn.supabase.co`
+   - `SUPABASE_URL`: `https://vzozcsrmwdgsobyvnbjl.supabase.co`
    - `SUPABASE_PUBLISHABLE_KEY`: `sb_publishable_`로 시작하는 공개 키 (secret 키는 넣지 마세요)
 4. **Actions** 탭에서 "Deploy to GitHub Pages"가 초록색이 되면 배포가 끝난 거예요.
 5. Supabase 대시보드 **Authentication → URL Configuration**의 Site URL에 `https://daldalbaby.com`을 넣어요. 그래야 가입 인증 메일의 링크가 사이트로 돌아와요.

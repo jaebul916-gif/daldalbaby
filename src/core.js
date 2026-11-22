@@ -83,7 +83,7 @@ function viewHome(){
   const hotTop=Object.entries(HOT).slice(0,4).map(([c,l])=>`<a class="tile" href="${hotHref(c)}" data-hotcat="${esc(c)}"><span class="eb">${esc(c)}</span><span class="rank">1위</span><h3>${esc(l[0].n)}</h3><p>${won(l[0].p)} · ${esc(l[0].why)}</p></a>`).join("");
   return `<div class="wrap hero"><div class="hero-grid">
     <div><p class="hero-sub">${TAGLINE}</p><h1>우리 아기에게<br><em>딱 맞는 것만.</em></h1>
-      <p>개월 수에 맞춰 꼭 필요한 육아템과 먹거리, 안전 정보를 골라드려요. 초보 엄빠도 헤매지 않게.</p>
+      <p class="for-who"><b>“이번 달엔 뭘 해줘야 하지?”</b> 개월수마다 뭘 사고, 뭘 먹이고, 뭘 조심해야 할지 몰라 막막한 초보 엄빠를 위해 만들었어요. 우리 아기 개월 수에 맞춰 꼭 필요한 것만 골라드려요.</p>
       <p class="maker">${HEART("var(--pink)",15)} ${MAKER}</p>
       <div class="birth"><label for="birth">아기 생일</label><input type="date" id="birth" value="${esc(saved)}" max="${new Date().toISOString().slice(0,10)}"></div>
       <div class="birth-out" id="birth-out">${bo.txt}</div>
@@ -305,6 +305,7 @@ function layoutFooter(){
   <div>가격, 당근 시세, 핫템 순위는 2026년 11월 기준으로 만든 예시 데이터예요. 실제 가격과 순위는 판매처와 시점에 따라 달라요.</div>
   <div>발달·식단·응급처치 정보는 일반적인 기준이에요. 걱정되는 점은 소아청소년과 전문의와 상의하세요. 영상 저작권은 각 채널에 있어요.</div>
   <p class="foot-maker">${HEART("var(--pink)",14)} ${MAKER}</p>
+  <p class="foot-about">달달베이비는 개월수마다 뭘 해줘야 할지 모르는 초보 엄빠를 위해 만든 개월수별 육아 가이드예요.</p>
   <div>© 2026 달달베이비 · daldalbaby.com · ${TAGLINE}</div></div></footer>`}
 
 /* ===== 간식·음료 ===== */

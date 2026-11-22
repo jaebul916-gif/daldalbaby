@@ -29,46 +29,46 @@ const clip = (s, n) => (s.length > n ? s.slice(0, n - 1).trim() + "…" : s);
 // 페이지 목록과 검색용 문구
 const pages = [
   { page: "home", path: "", priority: "1.0",
-    title: "달달베이비 | 개월수별 육아 필수템 · 출산준비물 리스트 · 아기 간식 언제부터",
+    title: "달달베이비 | 개월수별 육아 필수템 당근 vs 새상품 · 출산준비물 · 아기 간식 몇개월부터",
     ogTitle: "달달베이비 · 개월수별 육아 필수템, 당근 vs 새상품 비교",
-    desc: "초보 엄빠를 위한 개월수별 육아 필수템 가이드. 출산준비물 리스트부터 0~36개월 육아용품 당근 중고 vs 새상품 가격 비교, 이유식·간식 언제부터, 영아 하임리히법까지." },
+    desc: "개월수마다 뭘 해줘야 할지 모르는 초보 엄빠를 위한 개월수별 육아 가이드. 출산준비물 꼭 살 것과 안 사도 될 것, 0~36개월 육아용품 당근 vs 새상품 가격 비교, 쌀떡뻥·이유식 몇 개월부터, 아기 열날 때 응급처치까지." },
   ...STAGES.map(s => ({
     page: s.id, path: `month/${s.slug}/`, priority: "0.9",
-    title: `${s.kw} 총정리 · 당근 vs 새상품 | 달달베이비`,
+    title: `${s.kw}${s.kw.includes("당근") ? "" : " · 당근 vs 새상품"} | 달달베이비`,
     ogTitle: `${s.label} · ${s.title}`,
-    desc: clip(`${s.label} 아기(${s.name}) 육아 필수템 ${s.products.length}개를 당근 중고 시세와 새상품 가격으로 비교해요. ${s.sum} ${s.feed.main}, 안전 수칙과 영상까지.`, 160),
-    crumb: s.label, faq: s.id,
+    desc: clip(`${s.kw}. ${s.label} 아기 필수템 ${s.products.length}개를 당근 중고 시세와 새상품 가격으로 비교하고, ${s.feed.main}, 먹어도 되는 것과 안전 수칙까지 정리했어요.`, 160),
+    crumb: s.label,
   })),
   { page: "checklist", path: "checklist/", priority: "0.9",
-    title: "출산준비물 리스트 · 신생아 필수템 체크리스트 (새상품 vs 당근 중고) | 달달베이비",
-    ogTitle: "출산준비물 리스트, 새상품으로 살 것 vs 당근으로 아낄 것",
-    desc: "출산 전에 준비할 신생아 필수템을 체크리스트로 정리했어요. 젖병·카시트처럼 꼭 새상품으로 살 것과 아기침대·바운서처럼 당근 중고로 아껴도 되는 것을 나눴어요.",
+    title: "출산준비물 꼭 살것 안사도 될것 · 신생아 준비물 리스트 당근 vs 새상품 | 달달베이비",
+    ogTitle: "출산준비물 꼭 살 것, 당근으로 아낄 것, 안 사도 될 것",
+    desc: "출산준비물 꼭 살 것과 안 사도 될 것을 체크리스트로 정리했어요. 젖병·카시트는 새상품으로, 아기침대·바운서는 당근 중고로, 아기 베개·범퍼는 안 사도 돼요. 예상 예산까지.",
     crumb: "출산준비물 리스트" },
   { page: "when", path: "when/", priority: "0.9",
     title: "아기 언제부터? 이유식·떡뻥·물·우유·꿀·보행기 시기 총정리 | 달달베이비",
     ogTitle: "아기 언제부터? 엄빠들이 가장 많이 묻는 시기 총정리",
     desc: clip(`이유식 언제부터, 떡뻥 언제부터, 아기 물 언제부터, 생우유·꿀·주스·보행기 언제부터까지. 엄빠들이 가장 많이 검색하는 ${WHEN.length}가지 시기를 한눈에 정리했어요.`, 160),
-    crumb: "아기 언제부터", faqWhen: true },
+    crumb: "아기 언제부터" },
   { page: "sos", path: "emergency/", priority: "0.9",
-    title: "영아 하임리히법 · 아기 기도막힘 응급처치와 심폐소생술 영상 | 달달베이비",
-    ogTitle: "아기가 숨을 못 쉴 때, 영아 하임리히법과 CPR",
-    desc: "아기가 음식이 목에 걸렸을 때. 돌 전 영아 하임리히법(등 두드리기·가슴 압박), 돌 이후 복부 밀어올리기, 영아 심폐소생술을 단계별로 정리하고 교육 영상을 모았어요.", crumb: "영아 하임리히법" },
+    title: "아기 열날때·기도막힘 응급처치 · 영아 하임리히법과 심폐소생술 | 달달베이비",
+    ogTitle: "아기 열날 때, 숨을 못 쉴 때 응급처치",
+    desc: "아기가 음식이 목에 걸렸을 때 영아 하임리히법(등 두드리기·가슴 압박), 아기 열날 때 응급실 가야 하는 경우, 해열제 몇 개월부터, 영아 심폐소생술을 단계별로 정리했어요.", crumb: "아기 응급처치" },
   { page: "snacks", path: "snacks/", priority: "0.9",
-    title: "아기 간식 언제부터? 개월수별 떡뻥·과자·음료 추천과 성분 비교 | 달달베이비",
-    ogTitle: "개월수별 아기 간식, 떡뻥부터 주스까지",
-    desc: "6개월 떡뻥부터 돌 이후 우유·주스, 두 돌 간식까지. 개월수별로 먹어도 되는 아기 간식·과자·음료와 나트륨·당 성분 기준, 하루 몇 번 줄지 정리했어요.", crumb: "아기 간식" },
+    title: "아기 쌀떡뻥·간식 몇개월부터? 개월수별 과자·음료 추천과 성분 비교 | 달달베이비",
+    ogTitle: "아기 쌀떡뻥·간식 몇 개월부터? 개월수별 총정리",
+    desc: "아기 쌀떡뻥 몇 개월부터, 아기 과자 하루 몇 번, 주스는 언제부터? 6개월 떡뻥부터 두 돌 간식까지 개월수별 간식·음료와 나트륨·당 성분 기준을 비교했어요.", crumb: "아기 간식" },
   { page: "babyfood", path: "babyfood/", priority: "0.8",
-    title: "시판 이유식 추천 · 배달 이유식 vs 상온 이유식 브랜드 비교 | 달달베이비",
-    ogTitle: "이유식, 만들까 살까? 브랜드 추천과 비용 비교",
-    desc: "시판 이유식 뭐가 좋을까? 직접 만들기, 배달 이유식, 상온 이유식의 한 끼 비용과 장단점을 비교하고 많이 쓰는 이유식 브랜드를 모았어요.", crumb: "이유식 추천" },
+    title: "시판 이유식 브랜드 비교·가격 · 배달 이유식 vs 상온 이유식 vs 직접 만들기 | 달달베이비",
+    ogTitle: "시판 이유식 브랜드 비교, 한 끼 가격까지",
+    desc: "시판 이유식 브랜드 비교와 한 끼 가격. 배달 이유식, 상온 이유식, 직접 만들기의 비용과 장단점을 비교하고 많이 쓰는 이유식 브랜드를 모았어요.", crumb: "시판 이유식 비교" },
   { page: "hot", path: "hot/", priority: "0.7",
     title: "요즘 육아템 추천 · 이번 달 핫템 TOP 3 (젖병·기저귀·장난감) | 달달베이비",
     ogTitle: "이번 달 육아 핫템 TOP 3",
-    desc: `최근 30일 엄빠들이 가장 많이 담은 육아템을 ${HOTCATS.join(", ")} 카테고리별 1~3위로 보여드려요.` },
+    desc: `요즘 엄빠들이 많이 사는 육아템 추천. 최근 30일 가장 많이 담은 ${HOTCATS.join(", ")} 육아템을 카테고리별 1~3위로 보여드려요.`, crumb: "이번 달 핫템" },
   { page: "community", path: "community/", priority: "0.6",
     title: "엄빠 커뮤니티 · 자유게시판·육아 질문답변·사고팔아요 | 달달베이비",
     ogTitle: "달달베이비 엄빠 커뮤니티",
-    desc: "초보 엄마 아빠들이 육아 고민을 나누는 곳. 자유게시판, 육아 질문답변, 육아용품 사고팔아요 게시판." },
+    desc: "초보 엄마 아빠들이 육아 고민을 나누는 곳. 자유게시판, 개월수별 육아 질문답변, 육아용품 중고 사고팔아요 게시판.", crumb: "엄빠 커뮤니티" },
 ];
 
 function jsonLd(p) {
@@ -83,8 +83,8 @@ function jsonLd(p) {
     items.push({ "@context": "https://schema.org", "@type": "HowTo", name: "돌 전 아기(영아) 기도폐쇄 응급처치, 하임리히법",
       step: infant.steps.map(([n, t], i) => ({ "@type": "HowToStep", position: i + 1, name: n, text: t })) });
   }
-  const faqList = p.faq ? run(`faqFor(STAGES.find(s=>s.id===${JSON.stringify(p.faq)}))`)
-    : p.faqWhen ? WHEN.map(w => [w.q, `${w.a}. ${w.d}`]) : null;
+  // 화면 맨 아래 '자주 묻는 질문'과 같은 목록이에요.
+  const faqList = run(`pageFaq(${JSON.stringify(p.page)})`);
   if (faqList) items.push({ "@context": "https://schema.org", "@type": "FAQPage",
     mainEntity: faqList.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) });
   return items.map(o => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, "\\u003c")}</script>`).join("\n");

@@ -61,7 +61,7 @@ function videoCard([id,title,ch]){
 function sosBlock(lv="h2"){
   const s=SOS.find(x=>x.id===S.sos);
   return `<div class="sos-wrap" id="sos-block">
-    <div class="sos-title"><${lv}>${lv==="h1"?"영아 하임리히법 · 아기 기도막힘 응급처치":"아기가 숨을 못 쉬어요"}</${lv}><span class="call num">119</span></div>
+    <div class="sos-title"><${lv}>${lv==="h1"?"아기 기도막힘·열날 때 응급처치, 영아 하임리히법":"아기 기도막힘, 숨을 못 쉴 때 응급처치"}</${lv}><span class="call num">119</span></div>
     <div class="muted" style="font-size:14px">먼저 119에 전화하고 스피커폰으로 안내를 받으며 처치하세요.</div>
     <div class="sos-tabs" role="tablist">${SOS.map(x=>`<button role="tab" aria-selected="${x.id===S.sos}" class="${x.id===S.sos?"on":""}" data-sos="${x.id}">${x.label}</button>`).join("")}</div>
     <div class="sos-body"><ol class="steps">${s.steps.map(([a,b])=>`<li><b>${esc(a)}</b>${esc(b)}</li>`).join("")}</ol><div class="videos">${s.videos.map(videoCard).join("")}</div></div>
@@ -83,7 +83,7 @@ function viewHome(){
   const hotTop=Object.entries(HOT).slice(0,4).map(([c,l])=>`<a class="tile" href="${hotHref(c)}" data-hotcat="${esc(c)}"><span class="eb">${esc(c)}</span><span class="rank">1위</span><h3>${esc(l[0].n)}</h3><p>${won(l[0].p)} · ${esc(l[0].why)}</p></a>`).join("");
   return `<div class="wrap hero"><div class="hero-grid">
     <div><p class="hero-sub">${TAGLINE}</p><h1>우리 아기에게<br><em>딱 맞는 것만.</em></h1>
-      <p>개월 수에 맞춰 꼭 필요한 육아템과 먹거리, 안전 정보를 골라드려요. 초보 엄빠도 헤매지 않게.</p>
+      <p class="for-who"><b>“이번 달엔 뭘 해줘야 하지?”</b> 개월수마다 뭘 사고, 뭘 먹이고, 뭘 조심해야 할지 몰라 막막한 초보 엄빠를 위해 만들었어요. 우리 아기 개월 수에 맞춰 꼭 필요한 것만 골라드려요.</p>
       <p class="maker">${HEART("var(--pink)",15)} ${MAKER}</p>
       <div class="birth"><label for="birth">아기 생일</label><input type="date" id="birth" value="${esc(saved)}" max="${new Date().toISOString().slice(0,10)}"></div>
       <div class="birth-out" id="birth-out">${bo.txt}</div>
@@ -91,12 +91,13 @@ function viewHome(){
     </div>
     <div class="hero-art">${baby("#FFE1EA","open","face",2)}<span class="float h1">${HEART("var(--pink)",64)}</span><span class="float h2">${HEART("#FFB3C9",40)}</span><span class="float h3">${HEART("#FF8FB0",44)}</span></div>
   </div></div>
-  <div class="wrap sec" style="padding-top:28px"><div class="sec-head"><h2>개월별로 둘러보기.</h2></div>${monthsRow(bo.m!=null?stageOf(bo.m).id:"")}</div>
+  <div class="wrap sec" style="padding-top:28px"><div class="sec-head"><h2>개월수별 육아 필수템. <span class="soft">0개월부터 36개월까지.</span></h2></div>${monthsRow(bo.m!=null?stageOf(bo.m).id:"")}</div>
   ${homeSnacks()}
   ${homeWhen()}
   <div class="wrap sec"><div class="sec-head"><h2>이번 달 핫템. <span class="soft">엄빠들이 제일 많이 담았어요.</span> <span class="tag">예시</span></h2><a href="${U("hot")}">전체 순위 보기 ›</a></div><div class="tiles">${hotTop}</div></div>
   <div class="wrap sec"><div class="sec-head"><h2>엄빠 커뮤니티. <span class="soft">혼자 고민하지 마세요.</span></h2><a href="${U("free")}">커뮤니티 가기 ›</a></div><div class="tiles" id="home-comm"></div></div>
-  <div class="wrap sec"><a class="sos-banner" href="${U("sos")}"><b>응급처치, 미리 봐두세요.</b><span>돌 전 하임리히, 돌 이후 하임리히, 영아 심폐소생술을 영상으로 정리했어요.</span><i>지금 보기</i></a></div>`;
+  <div class="wrap sec"><a class="sos-banner" href="${U("sos")}"><b>응급처치, 미리 봐두세요.</b><span>아기 기도막힘 하임리히법, 열날 때 응급실 가야 하는 경우, 영아 심폐소생술을 정리했어요.</span><i>지금 보기</i></a></div>
+  ${faqSec("home","초보 엄빠가 자주 묻는 질문.")}`;
 }
 
 /* ===== 화면: 가이드 ===== */
@@ -134,27 +135,29 @@ function viewGuide(st){
   return `<div class="wrap" style="padding-top:18px">${monthsRow(st.id)}</div>
   <div class="wrap stage-head">${baby(st.color,MOODS[i%3],"",i)}<div><div class="eb">${st.label} · ${st.name}</div><h1>${esc(st.h1)}</h1><p class="lead-title">${esc(st.title)}</p><p>${esc(st.sum)}</p><ul class="miles">${st.miles.map(m=>`<li>${esc(m)}</li>`).join("")}</ul></div></div>
   <div class="seg"><div class="wrap"><div class="seg-in"><button data-go="products" class="on">필수템</button><button data-go="snacks">간식·음료</button><button data-go="food">먹거리</button><button data-go="safety">안전·영상</button><button data-go="faq">자주 묻는 질문</button><button data-go="sos-block">응급처치</button></div></div></div>
-  <section class="wrap sec" id="products" style="padding-top:24px"><div class="sec-head"><h2>${st.label} 필수템. <span class="soft">새상품과 당근 시세 비교.</span></h2></div>${cpNote()}<div id="prod-body">${productsBody(st)}</div></section>
+  <section class="wrap sec" id="products" style="padding-top:24px"><div class="sec-head"><h2>${st.label} 아기 필수템. <span class="soft">당근 vs 새상품 가격 비교.</span></h2></div>${cpNote()}<div id="prod-body">${productsBody(st)}</div></section>
   ${adSlot()}
-  <section class="wrap sec" id="snacks"><div class="sec-head"><h2>${st.label} 간식·음료. <span class="soft">떡뻥부터 음료까지.</span></h2><a href="${U("snacks")}">개월수별 간식 전체 보기 ›</a></div>${SNACK_GUIDE[st.id].none?"":cpNote()}${snackBlock(st)}</section>
-  <section class="wrap sec" id="food"><div class="sec-head"><h2>먹을 수 있는 것.</h2></div>
+  <section class="wrap sec" id="snacks"><div class="sec-head"><h2>${st.label} 아기 간식·음료. <span class="soft">${SNACK_GUIDE[st.id].none?"아직은 모유·분유만.":"몇 개월부터 뭘 줄까?"}</span></h2><a href="${U("snacks")}">개월수별 간식 전체 보기 ›</a></div>${SNACK_GUIDE[st.id].none?"":cpNote()}${snackBlock(st)}</section>
+  <section class="wrap sec" id="food"><div class="sec-head"><h2>${st.label} 아기 먹거리. <span class="soft">먹어도 되는 것, 아직 안 되는 것.</span></h2></div>
     <div class="food-intro"><span class="muted" style="font-size:13px">${st.label} 식사</span><b>${esc(f.main)}</b><p>${esc(f.detail)}</p></div>
     <div class="food">${col("f-ok","먹어도 돼요",f.ok)}${col("f-care","조심해서",f.care)}${col("f-no","아직 안 돼요",f.no)}</div></section>
-  <section class="wrap sec" id="safety"><div class="sec-head"><h2>안전 수칙과 영상.</h2><span class="muted" style="font-size:14px">${CAN_EMBED?"썸네일을 누르면 바로 재생돼요.":"미리보기에서는 영상이 유튜브 새 탭으로 열려요."}</span></div>
+  <section class="wrap sec" id="safety"><div class="sec-head"><h2>${st.label} 아기 안전 수칙과 영상.</h2><span class="muted" style="font-size:14px">${CAN_EMBED?"썸네일을 누르면 바로 재생돼요.":"미리보기에서는 영상이 유튜브 새 탭으로 열려요."}</span></div>
     <ul class="tips">${st.tips.map(([a,b])=>`<li><b>${esc(a)}</b>${esc(b)}</li>`).join("")}</ul><div class="videos">${st.videos.map(videoCard).join("")}</div></section>
-  <section class="wrap sec" id="faq"><div class="sec-head"><h2>${st.label} 아기, 자주 묻는 질문.</h2><a href="${U("when")}">아기 언제부터? 전체 보기 ›</a></div>${faqHtml(faqFor(st))}</section>
-  <section class="wrap sec">${sosBlock()}</section>`;
+  <section class="wrap sec" id="faq"><div class="sec-head"><h2>${st.label} 아기 자주 묻는 질문.</h2><a href="${U("when")}">아기 언제부터? 전체 보기 ›</a></div>${faqHtml(faqFor(st))}</section>
+  <section class="wrap sec">${sosBlock()}</section>
+  ${related(st.id)}`;
 }
 
 /* ===== 화면: 핫템 ===== */
 function viewHot(){
   const l=HOT[S.hotCat];
   const dl=d=>d==="NEW"?`<span class="delta nw">NEW</span>`:d==="="?`<span class="delta">유지</span>`:d.startsWith("+")?`<span class="delta up">▲ ${d.slice(1)}</span>`:`<span class="delta dn">▼ ${d.slice(1)}</span>`;
-  return `<div class="wrap sec" style="padding-top:40px"><div class="sec-head"><h1 class="h-page">이번 달 핫템. <span class="soft">최근 30일 기준.</span> <span class="tag">예시 데이터</span></h1></div>
+  return `<div class="wrap sec" style="padding-top:40px"><div class="sec-head"><h1 class="h-page">요즘 육아템 추천, 이번 달 핫템 TOP 3. <span class="soft">최근 30일 기준.</span> <span class="tag">예시 데이터</span></h1></div>
   ${cpNote()}
   <div class="filters">${Object.keys(HOT).map(c=>`<button class="chip${c===S.hotCat?" on":""}" data-hotcat="${esc(c)}">${esc(c)}</button>`).join("")}</div>
   <div class="podium">${l.map((h,i)=>`<article class="hot${i===0?" first":""}">${dl(h.d)}<span class="medal">${i+1}위</span><h3>${esc(h.n)}</h3><p>${esc(h.why)}</p><div class="hot-stat"><b class="price num">${won(h.p)}</b> · ${esc(h.s)}</div><a class="btn pri" style="margin-top:auto" href="${COUPANG_LINKS["hot-"+h.n]||"https://www.coupang.com/np/search?q="+encodeURIComponent(h.n)}" target="_blank" rel="sponsored noopener">쿠팡에서 보기</a></article>`).join("")}</div>
-  <p class="muted" style="font-size:13px;margin-top:16px">순위는 예시예요. 실제 서비스에서는 쿠팡 파트너스 API의 카테고리별 베스트 상품과 사이트 내 클릭 수를 합쳐 매달 자동으로 갱신할 수 있어요.</p></div>`;
+  <p class="muted" style="font-size:13px;margin-top:16px">순위는 예시예요. 실제 서비스에서는 쿠팡 파트너스 API의 카테고리별 베스트 상품과 사이트 내 클릭 수를 합쳐 매달 자동으로 갱신할 수 있어요.</p></div>
+  ${faqSec("hot","육아템 자주 묻는 질문.")}${related("hot")}`;
 }
 
 /* ===== 화면: 커뮤니티 ===== */
@@ -173,7 +176,8 @@ function boardShell(b){
   ${b==="market"?`<div class="notice"><b>안전 거래 안내</b> 직거래는 사람 많은 곳에서, 송금 전 물건을 꼭 확인하세요. 카시트, 젖꼭지처럼 새상품을 권하는 물건은 거래를 피해주세요.</div>`:""}
   ${b==="qna"?`<div class="notice"><b>의료 질문은</b> 경험 공유로만 참고하시고, 급한 증상은 소아과나 119에 먼저 연락하세요.</div>`:""}
   <div class="board-bar"><input type="search" id="q" placeholder="${BOARDS[b]}에서 검색" value="${esc(S.q)}" aria-label="게시글 검색"><a class="btn pink" href="${U("write")}" data-wb="${b}">${HEART("#fff",16)} 글쓰기</a></div>
-  <div id="plist">${loadingView()}</div></div>`;
+  <div id="plist">${loadingView()}</div></div>
+  ${faqSec("community","커뮤니티 이용 안내.")}`;
 }
 function viewPost(p){
   if(!p)return`<div class="wrap sec"><div class="empty">글을 찾을 수 없어요. 지워졌을 수 있어요. <a href="${U("free")}">목록으로</a></div></div>`;
@@ -235,7 +239,11 @@ function viewCheckMail(email){
     <p class="sub">${esc(email)} 으로 인증 메일을 보냈어요. 메일의 링크를 누르면 가입이 끝나고 바로 로그인돼요.</p>
     <a class="btn sec2 block" style="background:var(--bg2)" href="${U("login")}">로그인 화면으로</a></div></div>`;
 }
-function viewSOS(){return `<div class="wrap sec" style="padding-top:32px">${sosBlock("h1")}</div>`}
+function viewSOS(){return `<div class="wrap sec" style="padding-top:32px">${sosBlock("h1")}</div>
+  <section class="wrap sec" id="fever"><div class="sec-head"><h2>아기 열날 때, 응급실 가야 하는 경우.</h2></div>
+  <ul class="tips">${FEVER.map(([a,b])=>`<li><b>${esc(a)}</b>${esc(b)}</li>`).join("")}</ul>
+  <p class="muted" style="font-size:13px;margin-top:12px">일반적인 기준이에요. 판단이 어려우면 119에 전화하면 구급상황관리센터에서 상담을 받을 수 있어요.</p></section>
+  ${faqSec("sos","아기 응급처치 자주 묻는 질문.")}${related("sos")}`}
 
 const TAGLINE="개월수별 육아 필수템 · 당근 vs 새상품 비교";
 const MAKER="IT대기업 출신 육아대디가 만든 초기육아의 모든것";
@@ -297,6 +305,7 @@ function layoutFooter(){
   <div>가격, 당근 시세, 핫템 순위는 2026년 11월 기준으로 만든 예시 데이터예요. 실제 가격과 순위는 판매처와 시점에 따라 달라요.</div>
   <div>발달·식단·응급처치 정보는 일반적인 기준이에요. 걱정되는 점은 소아청소년과 전문의와 상의하세요. 영상 저작권은 각 채널에 있어요.</div>
   <p class="foot-maker">${HEART("var(--pink)",14)} ${MAKER}</p>
+  <p class="foot-about">달달베이비는 개월수마다 뭘 해줘야 할지 모르는 초보 엄빠를 위해 만든 개월수별 육아 가이드예요.</p>
   <div>© 2026 달달베이비 · daldalbaby.com · ${TAGLINE}</div></div></footer>`}
 
 /* ===== 간식·음료 ===== */
@@ -330,9 +339,9 @@ function homeSnacks(){
 function viewSnacks(){
   const stages=STAGES;
   return `<div class="wrap sec" style="padding-top:40px">
-  <div class="sec-head"><h1 class="h-page">아기 간식 언제부터? <span class="soft">개월수별 떡뻥·과자·음료 총정리.</span></h1><a href="${U("babyfood")}">이유식 브랜드 추천 ›</a></div>
+  <div class="sec-head"><h1 class="h-page">아기 쌀떡뻥·간식 몇 개월부터? <span class="soft">개월수별 과자·음료 총정리.</span></h1><a href="${U("babyfood")}">이유식 브랜드 추천 ›</a></div>
   ${cpNote()}
-  <h2 class="h-sub">간식 고르는 6가지 기준</h2>
+  <h2 class="h-sub">아기 과자 고르는 6가지 기준</h2>
   <ul class="tips">${SNACK_RULES.map(([a,b])=>`<li><b>${esc(a)}</b>${esc(b)}</li>`).join("")}</ul>
   ${nutritionTable()}
   ${adSlot()}
@@ -342,33 +351,65 @@ function viewSnacks(){
     return `<section class="snack-stage" id="s-${st.id}"><div class="ss-head">${baby(st.color,MOODS[i%3],"",i)}<div><h2>${st.label} 아기 간식 <span class="soft">· ${st.name}</span></h2><p>${esc(g.msg)}</p></div>${g.times?`<span class="times">${g.times}</span>`:""}</div>
     ${nw.length?`<div class="snack-grid">${nw.map(s=>snackCard(s,false)).join("")}</div>`:g.none?"":`<p class="muted">새로 시작하는 간식은 없어요. 앞 시기 간식을 이어서 주세요.</p>`}
     <a class="more" href="${U(st.id)}">${st.label} 필수템·먹거리 전체 보기 ›</a></section>`}).join("")}
-  <p class="muted" style="font-size:13px;margin-top:20px">가격은 2026년 11월 기준 예시예요. 아기마다 속도가 달라요. 알레르기가 걱정되면 소아청소년과와 상의하세요.</p></div>`;
+  <p class="muted" style="font-size:13px;margin-top:20px">가격은 2026년 11월 기준 예시예요. 아기마다 속도가 달라요. 알레르기가 걱정되면 소아청소년과와 상의하세요.</p></div>
+  ${faqSec("snacks","아기 간식 자주 묻는 질문.")}${related("snacks")}`;
 }
 function viewBabyfood(){
   const groups=Object.entries(BRAND_GROUPS);
   return `<div class="wrap sec" style="padding-top:40px">
-  <div class="sec-head"><h1 class="h-page">시판 이유식 추천. <span class="soft">배달 이유식 vs 상온 이유식 vs 직접 만들기.</span></h1><a href="${U("snacks")}">개월수별 간식 보기 ›</a></div>
+  <div class="sec-head"><h1 class="h-page">시판 이유식 브랜드 비교·가격. <span class="soft">배달 vs 상온 vs 직접 만들기.</span></h1><a href="${U("snacks")}">개월수별 간식 보기 ›</a></div>
   ${cpNote()}
-  <h2 class="h-sub">세 가지 방법 비교</h2>
+  <h2 class="h-sub">이유식 한 끼 비용 비교</h2>
   <div class="ways">${FOOD_WAYS.map(w=>`<article class="way"><h3>${esc(w.n)}</h3><div class="cost num">${esc(w.cost)}</div>
     <dl><dt>좋은 점</dt><dd>${esc(w.good)}</dd><dt>아쉬운 점</dt><dd>${esc(w.bad)}</dd><dt>이런 집에 맞아요</dt><dd>${esc(w.fit)}</dd></dl></article>`).join("")}</div>
   ${groups.map(([g,label])=>`<h2 class="h-sub">${esc(label)}</h2><div class="brands">${BRANDS.filter(b=>b.g===g).map((b,i)=>`<article class="brand"><span class="mono" style="background:${STAGES[(i*3+g.length)%STAGES.length].color}">${esc(b.n.slice(0,1))}</span><div><h3>${esc(b.n)}</h3><p>${esc(b.d)}</p></div><a class="btn pri" href="${brandLink(b)}" target="_blank" rel="sponsored noopener">쿠팡에서 보기</a></article>`).join("")}</div>`).join("")}
   <p class="notice" style="margin-top:22px"><b>안내</b> 많이 쓰이는 브랜드를 예시로 모았고, 광고나 협찬이 아니에요. 한 끼 비용은 대략적인 예시예요. 단계(초기·중기·후기)와 알레르기 성분은 구매 전에 꼭 확인하세요.</p>
-  </div>`;
+  </div>
+  ${faqSec("babyfood","시판 이유식 자주 묻는 질문.")}${related("babyfood")}`;
 }
 
 /* ===== 자주 묻는 질문 (검색용) ===== */
 function faqFor(st){
   const g=SNACK_GUIDE[st.id],f=st.feed,n=st.products.filter(p=>p.v==="new").map(p=>clean(p.n)),u=st.products.filter(p=>p.v!=="new").map(p=>clean(p.n));
   const l=[
-    [`${st.label} 아기는 무엇을 얼마나 먹나요?`,`${f.main}. ${f.detail}`],
-    [`${st.label} 아기 간식은 뭘 주면 되나요?`,g.none?g.msg:`${g.times}. ${g.msg} 많이 주는 간식: ${SNACKS.filter(s=>s.from<=st.to).slice(0,4).map(s=>clean(s.n)).join(", ")}.`],
-    [`${st.label} 육아 필수템은 뭐가 있나요?`,`${st.products.map(p=>clean(p.n)).join(", ")}이 필요해요.`],
-    [`${st.label} 육아용품, 당근 중고로 사도 되나요?`,`${u.length?u.join(", ")+"은 중고로 사도 괜찮아요. ":""}${n.length?n.join(", ")+"은 위생과 안전 때문에 새상품을 추천해요.":""}`],
-    [`${st.label} 아기 발달은 어느 정도인가요?`,`${st.miles.join(", ")}. 아기마다 속도가 달라요.`]
+    [`${st.label} 아기 수유량·먹는 양은 얼마나 되나요?`,`${f.main}. ${f.detail}`],
+    [`${st.label} 아기 간식, 뭘 언제부터 주면 되나요?`,g.none?g.msg:`${g.times}. ${g.msg} 많이 주는 간식: ${SNACKS.filter(s=>s.from<=st.to).slice(0,4).map(s=>clean(s.n)).join(", ")}.`],
+    [`${st.label} 아기 필수템, 뭐 사야 하나요?`,`${st.products.map(p=>clean(p.n)).join(", ")}이 필요해요.`],
+    [`${st.label} 육아용품 당근 중고 vs 새상품, 뭘로 살까요?`,`${u.length?u.join(", ")+"은 당근 중고로 사도 괜찮아요. ":""}${n.length?n.join(", ")+"은 위생과 안전 때문에 새상품을 추천해요.":""}`]
   ];
   WHEN.filter(w=>w.st===st.id).forEach(w=>l.push([w.q,`${w.a}. ${w.d}`]));
   return l;
+}
+/* 페이지마다 같은 질문 목록을 화면과 구조화 데이터(FAQPage)에 함께 써요 */
+function pageFaq(v){
+  const st=STAGES.find(s=>s.id===v);
+  if(st)return faqFor(st);
+  if(v==="when")return WHEN.map(w=>[w.q,`${w.a}. ${w.d}`]);
+  return PAGE_FAQ[v]||null;
+}
+const faqSec=(v,h)=>`<section class="wrap sec" id="faq"><div class="sec-head"><h2>${h}</h2></div>${faqHtml(pageFaq(v))}</section>`;
+/* 관련 글: 메인·개월별·간식·이유식·응급처치·체크리스트를 서로 이어요 */
+const LINK_INFO={
+  home:["달달베이비 홈","개월수별 육아 필수템 한눈에"],
+  checklist:["출산준비물 꼭 살 것, 안 사도 될 것","신생아 필수템 체크리스트"],
+  when:["아기 언제부터? 시기 총정리","이유식·떡뻥·물·우유·꿀 언제부터"],
+  snacks:["아기 쌀떡뻥·간식 몇 개월부터","개월수별 과자·음료와 성분 비교"],
+  babyfood:["시판 이유식 브랜드 비교·가격","배달 vs 상온 vs 직접 만들기"],
+  sos:["아기 열날 때·기도막힘 응급처치","영아 하임리히법과 심폐소생술"],
+  hot:["이번 달 육아템 핫템 TOP 3","젖병·기저귀·이유식·장난감"]
+};
+function relatedKeys(v){
+  const i=STAGES.findIndex(s=>s.id===v);
+  if(i>=0){const st=STAGES[i],l=[];if(i>0)l.push(STAGES[i-1].id);if(i<STAGES.length-1)l.push(STAGES[i+1].id);
+    l.push(i===0?"checklist":"when",st.from>=4&&st.from<=11?"babyfood":"snacks","sos");return l}
+  return({snacks:["m6","m12","babyfood","when","sos"],babyfood:["m4","m6","m7","snacks","when"],sos:["m0","m6","m12","snacks","when"],
+    checklist:["m0","m2","hot","sos","when"],when:["m6","m12","snacks","babyfood","checklist"],hot:["checklist","m0","m6","snacks","babyfood"]})[v]||[];
+}
+function related(v){
+  const ks=relatedKeys(v);if(!ks.length)return"";
+  const card=k=>{const st=STAGES.find(s=>s.id===k);const[t,d]=st?[`${st.label} 아기 가이드`,st.kw]:LINK_INFO[k];
+    return `<a class="tile" href="${U(k)}"><span class="eb">${st?"개월별 가이드":"함께 보면 좋아요"}</span><h3>${esc(t)}</h3><p>${esc(d)}</p></a>`};
+  return `<nav class="wrap sec related" aria-label="관련 글"><div class="sec-head"><h2>함께 보면 좋은 글.</h2></div><div class="tiles">${ks.map(card).join("")}</div></nav>`;
 }
 const faqHtml=l=>`<div class="faq">${l.map(([q,a],i)=>`<details${i===0?" open":""}><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div>`;
 function homeWhen(){
@@ -381,7 +422,8 @@ function viewWhen(){
   <div class="sec-head"><h1 class="h-page">아기 언제부터? <span class="soft">이유식·떡뻥·물·우유·꿀 시기 총정리.</span></h1></div>
   <div class="jump">${WHEN.map(w=>`<button class="chip" data-go="w-${w.k}">${esc(w.q.split(" ").slice(0,2).join(" "))}</button>`).join("")}</div>
   <div class="whens">${WHEN.map((w,i)=>`<article class="when" id="w-${w.k}"><h2>${esc(w.q)}</h2><p class="ans">${esc(w.a)}</p><p>${esc(w.d)}</p><a href="${U(w.st)}">${STAGES.find(s=>s.id===w.st).label} 가이드 보기 ›</a></article>${i===5?adSlot():""}`).join("")}</div>
-  <p class="muted" style="font-size:13px;margin-top:20px">일반적인 기준이에요. 아기마다 다를 수 있으니 걱정되는 점은 소아청소년과와 상의하세요.</p></div>`;
+  <p class="muted" style="font-size:13px;margin-top:20px">일반적인 기준이에요. 아기마다 다를 수 있으니 걱정되는 점은 소아청소년과와 상의하세요.</p></div>
+  ${related("when")}`;
 }
 function viewChecklist(){
   const items=[...STAGES[0].products.map(p=>[STAGES[0],p]),...STAGES[1].products.map(p=>[STAGES[1],p])];
@@ -390,13 +432,16 @@ function viewChecklist(){
   const nw=items.filter(([,p])=>p.v==="new"),us=items.filter(([,p])=>p.v!=="new");
   const total=items.reduce((a,[,p])=>a+((p.v==="used"&&p.us)?mid(p.us):mid(p.nw)),0);
   return `<div class="wrap sec" style="padding-top:40px">
-  <div class="sec-head"><h1 class="h-page">출산준비물 리스트. <span class="soft">신생아 필수템 체크리스트.</span></h1><a href="${U("m0")}">0~1개월 가이드 ›</a></div>
+  <div class="sec-head"><h1 class="h-page">출산준비물 꼭 살 것, 안 사도 될 것. <span class="soft">신생아 필수템 체크리스트.</span></h1><a href="${U("m0")}">0~1개월 가이드 ›</a></div>
   ${cpNote()}
   <dl class="budget num"><div><dt>준비물</dt><dd>${items.length}개</dd></div><div class="hl"><dt>꼭 새상품</dt><dd>${nw.length}개</dd></div><div><dt>당근 중고 OK</dt><dd>${us.length}개</dd></div><div><dt>예상 예산 (추천대로)</dt><dd>${won(total)}</dd></div></dl>
-  ${grp("꼭 새상품으로 사세요","입에 닿거나 안전과 직결되는 물건",nw)}
+  ${grp("꼭 살 것: 새상품으로","입에 닿거나 안전과 직결되는 물건",nw)}
   ${adSlot()}
-  ${grp("당근 중고로 아껴도 돼요","쓰는 기간이 짧고 세척이 쉬운 물건",us)}
-  <p class="muted" style="font-size:13px;margin-top:16px">체크한 항목은 이 기기에 저장돼요. 가격은 예시 시세예요.</p></div>`;
+  ${grp("당근 중고로 아껴도 될 것","쓰는 기간이 짧고 세척이 쉬운 물건",us)}
+  <h2 class="h-sub">안 사도 될 것 <span class="muted" style="font-size:14px;font-weight:400">자주 사지만 거의 안 쓰거나 권하지 않는 물건</span></h2>
+  <ul class="tips">${SKIP_ITEMS.map(([a,b])=>`<li><b>${esc(a)}</b>${esc(b)}</li>`).join("")}</ul>
+  <p class="muted" style="font-size:13px;margin-top:16px">체크한 항목은 이 기기에 저장돼요. 가격은 예시 시세예요.</p></div>
+  ${faqSec("checklist","출산준비물 자주 묻는 질문.")}${related("checklist")}`;
 }
 /* ===== 간식 성분 비교표 ===== */
 function nutritionTable(){

@@ -396,3 +396,6 @@ footer b{color:var(--ink)}
 .btn.kakao svg{flex:none}
 .form .or{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px;margin:2px 0}
 .form .or::before,.form .or::after{content:"";flex:1;height:1px;background:var(--line,#eee)}
+
+.hero .for-who b{color:var(--ink);font-weight:700}
+.foot-about{font-size:13px;color:var(--muted);margin:4px 0 0}

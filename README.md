@@ -76,3 +76,9 @@ cd dist && python3 -m http.server 8000
 ## Supabase 깨우기
 
 `supabase-keepalive.yml`이 매일 한국시간 오전 9시 17분에 게시글 1개를 읽어요. Actions 탭에서 "Run workflow"로 바로 실행해 볼 수 있어요. GitHub는 60일 동안 커밋이 없는 저장소의 예약 실행을 멈출 수 있어요. 그런 메일이 오면 Actions 탭에서 다시 켜주세요.
+
+## 구글 애드센스
+
+1. 애드센스에 `daldalbaby.com`을 사이트로 추가하고, 게시자 ID(`ca-pub-`로 시작)를 `site.config.json`의 `adsenseClient`에 넣은 뒤 배포해요. 그러면 모든 페이지에 애드센스 스크립트와 `ads.txt`가 자동으로 들어가요.
+2. 애드센스 사이트 검토가 끝나면 **광고 → 자동 광고**에서 전면 광고(비네트)와 앵커 광고를 켜요. 당근 링크로 나갈 때 등 페이지를 옮길 때 전면 광고가 떠요.
+3. 본문 중간 광고 자리를 쓰려면 디스플레이 광고 단위를 만들고 그 슬롯 번호를 `adsenseSlot`에 넣어요. 비워두면 자동 광고만 나와요.

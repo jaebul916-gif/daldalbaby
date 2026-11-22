@@ -389,3 +389,10 @@ footer b{color:var(--ink)}
 .ntable a{color:var(--blue);text-decoration:none;white-space:nowrap}
 .ad-wrap{padding-block:18px;text-align:center}
 .ad-label{display:block;font-size:11px;color:var(--muted);margin-bottom:4px}
+
+/* 카카오 로그인 */
+.btn.kakao{background:#FEE500;color:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;gap:8px;font-weight:700}
+.btn.kakao:hover{filter:brightness(.97)}
+.btn.kakao svg{flex:none}
+.form .or{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px;margin:2px 0}
+.form .or::before,.form .or::after{content:"";flex:1;height:1px;background:var(--line,#eee)}

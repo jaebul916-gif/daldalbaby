@@ -209,9 +209,11 @@ function viewWrite(){
   </form></div>`;
 }
 const demoNote=()=>SB_ON?"":`<p class="demo-note">미리보기 데모 모드예요. 계정과 글은 이 브라우저에만 저장돼요.</p>`;
+const kakaoBtn=(t)=>`<button type="button" class="btn kakao block" data-kakao="1"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.9 5.3 4.7 6.7l-1 3.6c-.1.3.3.6.6.4l4.2-2.8c.5.1 1 .1 1.5.1 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg>${t}</button><div class="or"><span>또는 이메일로</span></div>`;
 function viewLogin(msg=""){
   return `<div class="wrap"><form class="form" id="lform">${baby("#FFE1EA","wink","face-top")}
     <h1>다시 만나서 반가워요</h1><p class="sub">${esc(msg||"로그인하고 엄빠들과 이야기 나눠요.")}</p>
+    ${kakaoBtn("카카오로 3초 만에 로그인")}
     <div class="field"><label for="l-email">이메일</label><input id="l-email" type="email" autocomplete="email" required></div>
     <div class="field"><label for="l-pw">비밀번호</label><input id="l-pw" type="password" autocomplete="current-password" required></div>
     <p class="err" id="l-err"></p><button class="btn pink block" type="submit">로그인</button>
@@ -220,6 +222,7 @@ function viewLogin(msg=""){
 function viewJoin(){
   return `<div class="wrap"><form class="form" id="jform">${baby("#FFF0C9","open","face-top")}
     <h1>달달베이비 가족이 되어주세요</h1><p class="sub">가입하면 글쓰기, 댓글, 좋아요를 할 수 있어요.</p>
+    ${kakaoBtn("카카오로 시작하기")}
     <div class="field"><label for="j-nick">닉네임 (2~12자)</label><input id="j-nick" required minlength="2" maxlength="12" placeholder="예: 콩이맘"></div>
     <div class="field"><label for="j-email">이메일</label><input id="j-email" type="email" autocomplete="email" required></div>
     <div class="field"><label for="j-pw">비밀번호 (8자 이상)</label><input id="j-pw" type="password" minlength="8" autocomplete="new-password" required></div>

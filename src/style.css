@@ -420,3 +420,8 @@ footer b{color:var(--ink)}
 @media (max-width:760px){.podium .hot,.hot-row .hot{display:grid;grid-template-columns:112px 1fr;align-items:start}.podium .hot .btn,.hot-row .hot .btn{grid-column:1/-1}.hot-img span{font-size:40px}}
 
 .hot-upd{display:inline-block;font-size:12px;font-weight:700;color:var(--pink);background:var(--pink-soft);padding:4px 10px;border-radius:999px;margin:0 0 10px}
+
+/* 홈 h1: 검색 키워드 한 줄 + 감성 카피 */
+.hero h1 .h1-kw{display:block;word-break:keep-all;text-wrap:balance;font-size:clamp(14px,1.9vw,17px);font-weight:700;line-height:1.5;color:var(--muted);letter-spacing:-.01em;margin:0 0 12px}
+.hot-h2{margin:6px 0 12px;font-size:clamp(18px,2.4vw,22px)!important;word-break:keep-all;text-wrap:balance}
+.hot-cat-h{font-size:17px;font-weight:700;margin:4px 0 14px}

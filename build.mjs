@@ -22,6 +22,7 @@ const run = expr => vm.runInContext(expr, ctx);
 const STAGES = run("STAGES");
 const WHEN = run("WHEN");
 const HOTCATS = run("Object.keys(HOT)");
+const HOT_UPDATED_AT = run("HOT_UPDATED_AT");
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const clip = (s, n) => (s.length > n ? s.slice(0, n - 1).trim() + "…" : s);
@@ -62,9 +63,9 @@ const pages = [
     ogTitle: "시판 이유식 브랜드 비교, 한 끼 가격까지",
     desc: "시판 이유식 브랜드 비교와 한 끼 가격. 배달 이유식, 상온 이유식, 직접 만들기의 비용과 장단점을 비교하고 많이 쓰는 이유식 브랜드를 모았어요.", crumb: "시판 이유식 비교" },
   { page: "hot", path: "hot/", priority: "0.7",
-    title: "요즘 육아템 추천 · 이번 달 핫템 TOP 3 (젖병·기저귀·장난감) | 달달베이비",
-    ogTitle: "이번 달 육아 핫템 TOP 3",
-    desc: `요즘 엄빠들이 많이 사는 육아템 추천. 쿠팡 육아 인기 상품·리뷰를 바탕으로 ${HOTCATS.join(", ")} 카테고리별 1~3위를 브랜드·가격과 함께 골랐어요.`, crumb: "이번 달 핫템" },
+    title: "요즘 육아템 추천 · 이번 주 핫템 TOP 3 (젖병·기저귀·장난감) | 달달베이비",
+    ogTitle: "이번 주 육아 핫템 TOP 3",
+    desc: `요즘 엄빠들이 많이 사는 육아템 추천. 매주 일요일 갱신(${HOT_UPDATED_AT.replace(/-/g, ".")} 기준). 쿠팡 육아 인기 상품·리뷰를 바탕으로 ${HOTCATS.join(", ")} 카테고리별 1~3위를 브랜드·가격과 함께 골랐어요.`, crumb: "이번 달 핫템" },
   { page: "community", path: "community/", priority: "0.6",
     title: "엄빠 커뮤니티 · 자유게시판·육아 질문답변·사고팔아요 | 달달베이비",
     ogTitle: "달달베이비 엄빠 커뮤니티",
@@ -139,7 +140,7 @@ if (!/localhost|github\.io$/.test(host)) fs.writeFileSync(path.join(OUT, "CNAME"
 
 fs.writeFileSync(path.join(OUT, "sitemap.xml"),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-  pages.map(p => `  <url><loc>${SITE}/${p.path}</loc><lastmod>${TODAY}</lastmod><priority>${p.priority}</priority></url>`).join("\n") +
+  pages.map(p => `  <url><loc>${SITE}/${p.path}</loc><lastmod>${p.page === "hot" ? HOT_UPDATED_AT : TODAY}</lastmod><priority>${p.priority}</priority></url>`).join("\n") +
   `\n</urlset>\n`);
 // 애드센스 판매자 확인용 ads.txt
 if (ADS) fs.writeFileSync(path.join(OUT, "ads.txt"), `google.com, ${ADS.client.replace(/^ca-/, "")}, DIRECT, f08c47fec0942fa0\n`);

@@ -94,7 +94,7 @@ function viewHome(){
   <div class="wrap sec" style="padding-top:28px"><div class="sec-head"><h2>개월수별 육아 필수템. <span class="soft">0개월부터 36개월까지.</span></h2></div>${monthsRow(bo.m!=null?stageOf(bo.m).id:"")}</div>
   ${homeSnacks()}
   ${homeWhen()}
-  <div class="wrap sec"><div class="sec-head"><h2>이번 달 핫템. <span class="soft">카테고리별 1위.</span></h2><a href="${U("hot")}">전체 순위 보기 ›</a></div><p class="hot-note">${HOT_NOTE}</p>${cpNote()}<div class="hot-row">${hotTop}</div></div>
+  <div class="wrap sec"><div class="sec-head"><h2>이번 주 핫템. <span class="soft">카테고리별 1위.</span></h2><a href="${U("hot")}">전체 순위 보기 ›</a></div>${hotBadge()}<p class="hot-note">${HOT_NOTE}</p>${cpNote()}<div class="hot-row">${hotTop}</div></div>
   <div class="wrap sec"><div class="sec-head"><h2>엄빠 커뮤니티. <span class="soft">혼자 고민하지 마세요.</span></h2><a href="${U("free")}">커뮤니티 가기 ›</a></div><div class="tiles" id="home-comm"></div></div>
   <div class="wrap sec"><a class="sos-banner" href="${U("sos")}"><b>응급처치, 미리 봐두세요.</b><span>아기 기도막힘 하임리히법, 열날 때 응급실 가야 하는 경우, 영아 심폐소생술을 정리했어요.</span><i>지금 보기</i></a></div>
   ${faqSec("home","초보 엄빠가 자주 묻는 질문.")}`;
@@ -150,7 +150,9 @@ function viewGuide(st){
 
 /* ===== 화면: 핫템 ===== */
 const HOT_ICON={"젖병·수유":"🍼","기저귀":"🧷","이유식":"🥣","장난감":"🧸","책":"📚","외출":"🚼"};
-const HOT_NOTE="쿠팡 육아 카테고리 인기 상품·리뷰를 바탕으로 달달베이비가 고른 추천 리스트예요. 가격은 바뀔 수 있어요.";
+const hotDate=()=>HOT_UPDATED_AT.replace(/-/g,".");
+const hotBadge=()=>`<span class="hot-upd">최근 업데이트: ${hotDate()} · 매주 일요일 갱신</span>`;
+const HOT_NOTE=`쿠팡 육아 카테고리의 이번 주 인기 상품·리뷰를 바탕으로 달달베이비가 고른 추천 리스트예요. ${hotDate()} 기준이며 가격은 바뀔 수 있어요.`;
 const hotName=h=>h.b+" "+h.n;
 const hotLink=h=>COUPANG_LINKS["hot-"+hotName(h)]||"https://www.coupang.com/np/search?q="+encodeURIComponent(hotName(h));
 const hotThumb=(c,h)=>`<div class="hot-img" aria-hidden="true"><span>${HOT_ICON[c]||"🎁"}</span>${h.image?`<img src="${esc(h.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:""}</div>`;
@@ -162,7 +164,8 @@ function hotCard(c,h,i,cat){
 }
 function viewHot(){
   const l=HOT[S.hotCat];
-  return `<div class="wrap sec" style="padding-top:40px"><div class="sec-head"><h1 class="h-page">요즘 육아템 추천, 이번 달 핫템 TOP 3.</h1></div>
+  return `<div class="wrap sec" style="padding-top:40px"><div class="sec-head"><h1 class="h-page">요즘 육아템 추천, 이번 주 핫템 TOP 3.</h1></div>
+  ${hotBadge()}
   <p class="hot-note">${HOT_NOTE}</p>
   ${cpNote()}
   <div class="filters">${Object.keys(HOT).map(c=>`<button class="chip${c===S.hotCat?" on":""}" data-hotcat="${esc(c)}">${esc(c)}</button>`).join("")}</div>
@@ -299,7 +302,7 @@ const LOGO=`<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><
 function layoutTop(v){const n=navOf(v),on=k=>n===k?' class="on" aria-current="page"':"";
   return `<nav class="gnav" aria-label="주 메뉴"><div class="wrap">
   <a class="logo" href="${U("home")}" aria-label="달달베이비 홈">${LOGO}달달베이비</a><span class="tagline">${TAGLINE}</span>
-  <div class="links" id="links"><a href="${U("m0")}" data-nav="guide"${on("guide")}>개월별 가이드</a><a href="${U("snacks")}" data-nav="snack"${on("snack")}>간식·이유식</a><a href="${U("hot")}" data-nav="hot"${on("hot")}>이번 달 핫템</a><a href="${U("free")}" data-nav="board"${on("board")}>커뮤니티</a><a href="${U("sos")}" class="sos" data-nav="sos">응급처치</a></div>
+  <div class="links" id="links"><a href="${U("m0")}" data-nav="guide"${on("guide")}>개월별 가이드</a><a href="${U("snacks")}" data-nav="snack"${on("snack")}>간식·이유식</a><a href="${U("hot")}" data-nav="hot"${on("hot")}>이번 주 핫템</a><a href="${U("free")}" data-nav="board"${on("board")}>커뮤니티</a><a href="${U("sos")}" class="sos" data-nav="sos">응급처치</a></div>
   <a class="me" id="me" href="${U("login")}">로그인</a></div></nav>`}
 function layoutTabs(v){const n=navOf(v),c=k=>n===k?"on":"";
   return `<nav class="tabbar" aria-label="하단 메뉴" id="tabbar">
@@ -310,9 +313,9 @@ function layoutTabs(v){const n=navOf(v),c=k=>n===k?"on":"";
   <a href="${U("sos")}" data-nav="sos" class="sos ${c("sos")}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12h10" stroke-linecap="round"/></svg>응급</a></nav>`}
 function layoutFooter(){
   return `<footer><div class="wrap">
-  <nav class="foot-links" aria-label="개월별 가이드">${STAGES.map(s=>`<a href="${U(s.id)}">${s.label} 가이드</a>`).join("")}<a href="${U("checklist")}">출산준비물 리스트</a><a href="${U("when")}">아기 언제부터?</a><a href="${U("snacks")}">개월수별 아기 간식</a><a href="${U("babyfood")}">이유식 브랜드 추천</a><a href="${U("sos")}">영아 응급처치</a><a href="${U("hot")}">이번 달 핫템</a></nav>
+  <nav class="foot-links" aria-label="개월별 가이드">${STAGES.map(s=>`<a href="${U(s.id)}">${s.label} 가이드</a>`).join("")}<a href="${U("checklist")}">출산준비물 리스트</a><a href="${U("when")}">아기 언제부터?</a><a href="${U("snacks")}">개월수별 아기 간식</a><a href="${U("babyfood")}">이유식 브랜드 추천</a><a href="${U("sos")}">영아 응급처치</a><a href="${U("hot")}">이번 주 핫템</a></nav>
   <p class="cp-foot"><b>쿠팡 파트너스 안내</b> ${CP_NOTICE}</p>
-  <div>가격, 당근 시세, 핫템 순위는 2026년 11월 기준으로 만든 예시 데이터예요. 실제 가격과 순위는 판매처와 시점에 따라 달라요.</div>
+  <div>가격과 당근 시세는 2026년 11월 기준 예시이고, 핫템은 매주 일요일 갱신해요. 실제 가격과 순위는 판매처와 시점에 따라 달라요.</div>
   <div>발달·식단·응급처치 정보는 일반적인 기준이에요. 걱정되는 점은 소아청소년과 전문의와 상의하세요. 영상 저작권은 각 채널에 있어요.</div>
   <p class="foot-maker">${HEART("var(--pink)",14)} ${MAKER}</p>
   <p class="foot-about">달달베이비는 개월수마다 뭘 해줘야 할지 모르는 초보 엄빠를 위해 만든 개월수별 육아 가이드예요.</p>
@@ -406,7 +409,7 @@ const LINK_INFO={
   snacks:["아기 쌀떡뻥·간식 몇 개월부터","개월수별 과자·음료와 성분 비교"],
   babyfood:["시판 이유식 브랜드 비교·가격","배달 vs 상온 vs 직접 만들기"],
   sos:["아기 열날 때·기도막힘 응급처치","영아 하임리히법과 심폐소생술"],
-  hot:["이번 달 육아템 핫템 TOP 3","젖병·기저귀·이유식·장난감"]
+  hot:["이번 주 육아템 핫템 TOP 3","매주 일요일 갱신"]
 };
 function relatedKeys(v){
   const i=STAGES.findIndex(s=>s.id===v);

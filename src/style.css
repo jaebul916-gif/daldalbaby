@@ -418,3 +418,5 @@ footer b{color:var(--ink)}
 .hot .why{font-size:14px;color:var(--muted);margin:0}
 .hot .btn{margin-top:auto}
 @media (max-width:760px){.podium .hot,.hot-row .hot{display:grid;grid-template-columns:112px 1fr;align-items:start}.podium .hot .btn,.hot-row .hot .btn{grid-column:1/-1}.hot-img span{font-size:40px}}
+
+.hot-upd{display:inline-block;font-size:12px;font-weight:700;color:var(--pink);background:var(--pink-soft);padding:4px 10px;border-radius:999px;margin:0 0 10px}

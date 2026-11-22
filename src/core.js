@@ -28,16 +28,31 @@ const ago=t=>{const m=(Date.now()-t)/6e4;if(m<1)return"방금";if(m<60)return Ma
 const HEART=(c="var(--pink)",w=18)=>`<svg class="heart" width="${w}" height="${w}" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-10-9.3A5.6 5.6 0 0 1 12 5.6a5.6 5.6 0 0 1 10 6.1C19.5 16.4 12 21 12 21z" fill="${c}"/></svg>`;
 
 /* 웃는 아기 얼굴 일러스트 */
-function baby(bg="#FFD6E3",mood="smile",cls=""){
+function baby(bg="#FFD6E3",mood="smile",cls="",hair=1){
   const mouth=mood==="open"?`<path d="M42 66q8 11 16 0z" fill="#E2557A"/><path d="M45 70q5 3 10 0" stroke="#FF9DB5" stroke-width="2.5" fill="none" stroke-linecap="round"/>`:`<path d="M42 66q8 8 16 0" stroke="#3B2A22" stroke-width="3.2" fill="none" stroke-linecap="round"/>`;
   const eyes=mood==="wink"?`<path d="M37 55q4.5-5 9 0" stroke="#3B2A22" stroke-width="3.2" fill="none" stroke-linecap="round"/><circle cx="59" cy="54" r="3.6" fill="#3B2A22"/><circle cx="60.3" cy="52.6" r="1.2" fill="#fff"/>`:`<path d="M37 55q4.5-5 9 0M54 55q4.5-5 9 0" stroke="#3B2A22" stroke-width="3.2" fill="none" stroke-linecap="round"/>`;
-  return `<svg class="${cls}" viewBox="0 0 100 100" role="img" aria-label="웃는 아기 얼굴"><circle cx="50" cy="50" r="50" fill="${bg}"/><circle cx="21" cy="57" r="7" fill="#FFD9C2"/><circle cx="79" cy="57" r="7" fill="#FFD9C2"/><circle cx="50" cy="56" r="29" fill="#FFE5D3"/><path d="M50 28q-8-9 1-13q-1 7 3 9" stroke="#7A5644" stroke-width="3" fill="none" stroke-linecap="round"/>${eyes}<ellipse cx="35" cy="64" rx="5.5" ry="3.6" fill="#FF9DB5" opacity=".75"/><ellipse cx="65" cy="64" rx="5.5" ry="3.6" fill="#FF9DB5" opacity=".75"/>${mouth}</svg>`;
+  return `<svg class="${cls}" viewBox="0 0 100 100" role="img" aria-label="웃는 아기 얼굴"><circle cx="50" cy="50" r="50" fill="${bg}"/><circle cx="21" cy="57" r="7" fill="#FFD9C2"/><circle cx="79" cy="57" r="7" fill="#FFD9C2"/><circle cx="50" cy="56" r="29" fill="#FFE5D3"/>${hairSvg(hair)}${eyes}<ellipse cx="35" cy="64" rx="5.5" ry="3.6" fill="#FF9DB5" opacity=".75"/><ellipse cx="65" cy="64" rx="5.5" ry="3.6" fill="#FF9DB5" opacity=".75"/>${mouth}</svg>`;
 }
 const MOODS=["smile","open","wink"];
+/* 개월이 지날수록 머리카락이 자라요: 0(신생아 한 가닥) ~ 7(두 돌, 양갈래) */
+function hairSvg(lv){
+  const H="#7A5644",st=`stroke="${H}" stroke-width="3" fill="none" stroke-linecap="round"`;
+  const curl=`<path d="M50 28q-8-9 1-13q-1 7 3 9" ${st}/>`;
+  if(lv<=0)return curl;
+  if(lv===1)return curl+`<path d="M43 30q-4-5 0-9M57 30q4-5 0-9" ${st} stroke-width="2.4"/>`;
+  if(lv===2)return curl+`<path d="M39 32q-6-6-1-11M61 32q6-6 1-11M45 29q-3-5 1-8M55 29q3-5-1-8" ${st} stroke-width="2.6"/>`;
+  if(lv===3)return `<path d="M27 47Q27 26 50 26Q73 26 73 47Q66 36 50 35Q34 36 27 47Z" fill="${H}"/>`+curl;
+  const cap=`<path d="M23 54Q21 23 50 22Q79 23 77 54Q73 41 67 38Q61 44 55 38Q49 44 43 38Q37 44 31 39Q26 44 23 54Z" fill="${H}"/>`;
+  if(lv===4)return cap+`<path d="M50 23q-6-9 2-13q0 6 2 9" ${st}/>`;
+  const sides=`<path d="M23 50q-3 10 2 16q2-8 3-13zM77 50q3 10-2 16q-2-8-3-13z" fill="${H}"/>`;
+  if(lv===5)return cap+sides;
+  if(lv===6)return cap+sides+`<path d="M50 22q-3-11 6-14q-1 7-3 10z" fill="${H}"/><circle cx="50" cy="22" r="3.4" fill="#FF7AA2"/>`;
+  return cap+sides+`<circle cx="21" cy="33" r="8" fill="${H}"/><circle cx="79" cy="33" r="8" fill="${H}"/><circle cx="26" cy="37" r="3" fill="#FF7AA2"/><circle cx="74" cy="37" r="3" fill="#FF7AA2"/>`;
+}
 
 /* ===== 공통 조각 ===== */
 function monthsRow(active){
-  return `<div class="months" role="list">${STAGES.map((s,i)=>`<a role="listitem" class="mo${s.id===active?" on":""}" href="${U(s.id)}">${baby(s.color,MOODS[i%3])}<b>${s.label}</b><span>${s.name}</span></a>`).join("")}</div>`;
+  return `<div class="months" role="list">${STAGES.map((s,i)=>`<a role="listitem" class="mo${s.id===active?" on":""}" href="${U(s.id)}">${baby(s.color,MOODS[i%3],"",i)}<b>${s.label}</b><span>${s.name}</span></a>`).join("")}</div>`;
 }
 function videoCard([id,title,ch]){
   return `<div class="video"><button class="vthumb" data-play="${id}" aria-label="재생: ${esc(title)}"><img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="play"></span></button>
@@ -46,7 +61,7 @@ function videoCard([id,title,ch]){
 function sosBlock(lv="h2"){
   const s=SOS.find(x=>x.id===S.sos);
   return `<div class="sos-wrap" id="sos-block">
-    <div class="sos-title"><${lv}>아기가 숨을 못 쉬어요</${lv}><span class="call num">119</span></div>
+    <div class="sos-title"><${lv}>${lv==="h1"?"영아 하임리히법 · 아기 기도막힘 응급처치":"아기가 숨을 못 쉬어요"}</${lv}><span class="call num">119</span></div>
     <div class="muted" style="font-size:14px">먼저 119에 전화하고 스피커폰으로 안내를 받으며 처치하세요.</div>
     <div class="sos-tabs" role="tablist">${SOS.map(x=>`<button role="tab" aria-selected="${x.id===S.sos}" class="${x.id===S.sos?"on":""}" data-sos="${x.id}">${x.label}</button>`).join("")}</div>
     <div class="sos-body"><ol class="steps">${s.steps.map(([a,b])=>`<li><b>${esc(a)}</b>${esc(b)}</li>`).join("")}</ol><div class="videos">${s.videos.map(videoCard).join("")}</div></div>
@@ -74,10 +89,11 @@ function viewHome(){
       <div class="birth-out" id="birth-out">${bo.txt}</div>
       ${bo.m!=null?`<a class="btn pink" style="display:inline-flex" href="${U(stageOf(bo.m).id)}">${stageOf(bo.m).label} 가이드 보기</a>`:""}
     </div>
-    <div class="hero-art">${baby("#FFE1EA","open","face")}<span class="float h1">${HEART("var(--pink)",64)}</span><span class="float h2">${HEART("#FFB3C9",40)}</span><span class="float h3">${HEART("#FF8FB0",44)}</span></div>
+    <div class="hero-art">${baby("#FFE1EA","open","face",2)}<span class="float h1">${HEART("var(--pink)",64)}</span><span class="float h2">${HEART("#FFB3C9",40)}</span><span class="float h3">${HEART("#FF8FB0",44)}</span></div>
   </div></div>
   <div class="wrap sec" style="padding-top:28px"><div class="sec-head"><h2>개월별로 둘러보기.</h2></div>${monthsRow(bo.m!=null?stageOf(bo.m).id:"")}</div>
   ${homeSnacks()}
+  ${homeWhen()}
   <div class="wrap sec"><div class="sec-head"><h2>이번 달 핫템. <span class="soft">엄빠들이 제일 많이 담았어요.</span> <span class="tag">예시</span></h2><a href="${U("hot")}">전체 순위 보기 ›</a></div><div class="tiles">${hotTop}</div></div>
   <div class="wrap sec"><div class="sec-head"><h2>엄빠 커뮤니티. <span class="soft">혼자 고민하지 마세요.</span></h2><a href="${U("free")}">커뮤니티 가기 ›</a></div><div class="tiles" id="home-comm"></div></div>
   <div class="wrap sec"><a class="sos-banner" href="${U("sos")}"><b>응급처치, 미리 봐두세요.</b><span>돌 전 하임리히, 돌 이후 하임리히, 영아 심폐소생술을 영상으로 정리했어요.</span><i>지금 보기</i></a></div>`;
@@ -116,15 +132,17 @@ function viewGuide(st){
   const f=st.feed,i=STAGES.indexOf(st);
   const col=(cls,t,arr)=>`<div class="fcol ${cls}"><h4>${t}</h4><ul>${arr.map(([a,b])=>`<li>${esc(a)}<em>${esc(b)}</em></li>`).join("")}</ul></div>`;
   return `<div class="wrap" style="padding-top:18px">${monthsRow(st.id)}</div>
-  <div class="wrap stage-head">${baby(st.color,MOODS[i%3])}<div><div class="eb">${st.label} · ${st.name}</div><h1>${esc(st.title)}</h1><p>${esc(st.sum)}</p><ul class="miles">${st.miles.map(m=>`<li>${esc(m)}</li>`).join("")}</ul></div></div>
-  <div class="seg"><div class="wrap"><div class="seg-in"><button data-go="products" class="on">필수템</button><button data-go="snacks">간식·음료</button><button data-go="food">먹거리</button><button data-go="safety">안전·영상</button><button data-go="sos-block">응급처치</button></div></div></div>
+  <div class="wrap stage-head">${baby(st.color,MOODS[i%3],"",i)}<div><div class="eb">${st.label} · ${st.name}</div><h1>${esc(st.h1)}</h1><p class="lead-title">${esc(st.title)}</p><p>${esc(st.sum)}</p><ul class="miles">${st.miles.map(m=>`<li>${esc(m)}</li>`).join("")}</ul></div></div>
+  <div class="seg"><div class="wrap"><div class="seg-in"><button data-go="products" class="on">필수템</button><button data-go="snacks">간식·음료</button><button data-go="food">먹거리</button><button data-go="safety">안전·영상</button><button data-go="faq">자주 묻는 질문</button><button data-go="sos-block">응급처치</button></div></div></div>
   <section class="wrap sec" id="products" style="padding-top:24px"><div class="sec-head"><h2>${st.label} 필수템. <span class="soft">새상품과 당근 시세 비교.</span></h2></div>${cpNote()}<div id="prod-body">${productsBody(st)}</div></section>
+  ${adSlot()}
   <section class="wrap sec" id="snacks"><div class="sec-head"><h2>${st.label} 간식·음료. <span class="soft">떡뻥부터 음료까지.</span></h2><a href="${U("snacks")}">개월수별 간식 전체 보기 ›</a></div>${SNACK_GUIDE[st.id].none?"":cpNote()}${snackBlock(st)}</section>
   <section class="wrap sec" id="food"><div class="sec-head"><h2>먹을 수 있는 것.</h2></div>
     <div class="food-intro"><span class="muted" style="font-size:13px">${st.label} 식사</span><b>${esc(f.main)}</b><p>${esc(f.detail)}</p></div>
     <div class="food">${col("f-ok","먹어도 돼요",f.ok)}${col("f-care","조심해서",f.care)}${col("f-no","아직 안 돼요",f.no)}</div></section>
   <section class="wrap sec" id="safety"><div class="sec-head"><h2>안전 수칙과 영상.</h2><span class="muted" style="font-size:14px">${CAN_EMBED?"썸네일을 누르면 바로 재생돼요.":"미리보기에서는 영상이 유튜브 새 탭으로 열려요."}</span></div>
     <ul class="tips">${st.tips.map(([a,b])=>`<li><b>${esc(a)}</b>${esc(b)}</li>`).join("")}</ul><div class="videos">${st.videos.map(videoCard).join("")}</div></section>
+  <section class="wrap sec" id="faq"><div class="sec-head"><h2>${st.label} 아기, 자주 묻는 질문.</h2><a href="${U("when")}">아기 언제부터? 전체 보기 ›</a></div>${faqHtml(faqFor(st))}</section>
   <section class="wrap sec">${sosBlock()}</section>`;
 }
 
@@ -226,7 +244,7 @@ const cpNote=()=>`<p class="cp-note"><svg width="14" height="14" viewBox="0 0 24
    빌드된 사이트(여러 페이지): /month/6/ 같은 실제 주소. 한 파일 미리보기: #m6 같은 해시 주소. */
 let MPA=false,ROOT="",PAGE=null;
 function setPage(page,root){MPA=true;PAGE=page;ROOT=root}
-const PATHS={home:"",hot:"hot/",sos:"emergency/",snacks:"snacks/",babyfood:"babyfood/"};
+const PATHS={home:"",hot:"hot/",sos:"emergency/",snacks:"snacks/",babyfood:"babyfood/",when:"when/",checklist:"checklist/"};
 STAGES.forEach(s=>{PATHS[s.id]="month/"+s.slug+"/"});
 const HASH_VIEWS=/^(free|qna|market|write|login|join|post-\d+)$/;
 function U(v){
@@ -246,12 +264,14 @@ function renderStatic(v){
   if(STAGES.some(s=>s.id===v)){const st=STAGES.find(s=>s.id===v);S.month=st.from;return viewGuide(st)}
   if(v==="hot")return viewHot();
   if(v==="snacks")return viewSnacks();
+  if(v==="when")return viewWhen();
+  if(v==="checklist")return viewChecklist();
   if(v==="babyfood")return viewBabyfood();
   if(v==="sos")return viewSOS();
   if(BOARDS[v])return boardShell(v);
   return viewHome();
 }
-function navOf(v){if(/^m\d+$/.test(v))return"guide";if(v==="snacks"||v==="babyfood")return"snack";if(v==="hot")return"hot";if(v==="sos")return"sos";if(BOARDS[v]||v==="write"||/^post-/.test(v)||v==="community")return"board";if(v==="login"||v==="join")return"me";return"home"}
+function navOf(v){if(/^m\d+$/.test(v)||v==="when"||v==="checklist")return"guide";if(v==="snacks"||v==="babyfood")return"snack";if(v==="hot")return"hot";if(v==="sos")return"sos";if(BOARDS[v]||v==="write"||/^post-/.test(v)||v==="community")return"board";if(v==="login"||v==="join")return"me";return"home"}
 
 /* ===== 공통 틀: 상단 메뉴, 하단 탭, 푸터 ===== */
 const LOGO=`<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-10-9.3A5.6 5.6 0 0 1 12 5.6a5.6 5.6 0 0 1 10 6.1C19.5 16.4 12 21 12 21z" fill="var(--pink)"/></svg>`;
@@ -269,7 +289,7 @@ function layoutTabs(v){const n=navOf(v),c=k=>n===k?"on":"";
   <a href="${U("sos")}" data-nav="sos" class="sos ${c("sos")}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12h10" stroke-linecap="round"/></svg>응급</a></nav>`}
 function layoutFooter(){
   return `<footer><div class="wrap">
-  <nav class="foot-links" aria-label="개월별 가이드">${STAGES.map(s=>`<a href="${U(s.id)}">${s.label} 가이드</a>`).join("")}<a href="${U("snacks")}">개월수별 아기 간식</a><a href="${U("babyfood")}">이유식 브랜드 추천</a><a href="${U("sos")}">영아 응급처치</a><a href="${U("hot")}">이번 달 핫템</a></nav>
+  <nav class="foot-links" aria-label="개월별 가이드">${STAGES.map(s=>`<a href="${U(s.id)}">${s.label} 가이드</a>`).join("")}<a href="${U("checklist")}">출산준비물 리스트</a><a href="${U("when")}">아기 언제부터?</a><a href="${U("snacks")}">개월수별 아기 간식</a><a href="${U("babyfood")}">이유식 브랜드 추천</a><a href="${U("sos")}">영아 응급처치</a><a href="${U("hot")}">이번 달 핫템</a></nav>
   <p class="cp-foot"><b>쿠팡 파트너스 안내</b> ${CP_NOTICE}</p>
   <div>가격, 당근 시세, 핫템 순위는 2026년 11월 기준으로 만든 예시 데이터예요. 실제 가격과 순위는 판매처와 시점에 따라 달라요.</div>
   <div>발달·식단·응급처치 정보는 일반적인 기준이에요. 걱정되는 점은 소아청소년과 전문의와 상의하세요. 영상 저작권은 각 채널에 있어요.</div>
@@ -288,7 +308,7 @@ function snackCard(s,isNew){
   </article>`;
 }
 function snackNone(st,g){
-  return `<div class="snack-none">${baby(st.color,"smile")}<div><b>${st.label}에는 간식이 필요 없어요</b><p>${esc(g.msg)}</p><a href="${U("snacks")}">6개월부터 먹는 간식 미리 보기 ›</a></div></div>`;
+  return `<div class="snack-none">${baby(st.color,"smile","",STAGES.indexOf(st))}<div><b>${st.label}에는 간식이 필요 없어요</b><p>${esc(g.msg)}</p><a href="${U("snacks")}">6개월부터 먹는 간식 미리 보기 ›</a></div></div>`;
 }
 function snackBlock(st){
   const g=SNACK_GUIDE[st.id];if(g.none)return snackNone(st,g);
@@ -307,14 +327,16 @@ function homeSnacks(){
 function viewSnacks(){
   const stages=STAGES;
   return `<div class="wrap sec" style="padding-top:40px">
-  <div class="sec-head"><h1 class="h-page">개월수별 아기 간식. <span class="soft">떡뻥·과자·음료, 언제부터 뭘 줄까.</span></h1><a href="${U("babyfood")}">이유식 브랜드 추천 ›</a></div>
+  <div class="sec-head"><h1 class="h-page">아기 간식 언제부터? <span class="soft">개월수별 떡뻥·과자·음료 총정리.</span></h1><a href="${U("babyfood")}">이유식 브랜드 추천 ›</a></div>
   ${cpNote()}
   <h2 class="h-sub">간식 고르는 6가지 기준</h2>
   <ul class="tips">${SNACK_RULES.map(([a,b])=>`<li><b>${esc(a)}</b>${esc(b)}</li>`).join("")}</ul>
+  ${nutritionTable()}
+  ${adSlot()}
   <div class="filters" role="group" aria-label="간식 종류">${["전체",...SNACK_TYPES].map(t=>`<button class="chip${t==="전체"?" on":""}" data-stype="${esc(t)}">${esc(t)}</button>`).join("")}</div>
   <div class="jump">${stages.map(st=>`<button class="chip" data-go="s-${st.id}">${st.label}</button>`).join("")}</div>
   ${stages.map((st,i)=>{const g=SNACK_GUIDE[st.id],nw=SNACKS.filter(s=>s.from>=st.from&&s.from<=st.to);
-    return `<section class="snack-stage" id="s-${st.id}"><div class="ss-head">${baby(st.color,MOODS[i%3])}<div><h2>${st.label} 아기 간식 <span class="soft">· ${st.name}</span></h2><p>${esc(g.msg)}</p></div>${g.times?`<span class="times">${g.times}</span>`:""}</div>
+    return `<section class="snack-stage" id="s-${st.id}"><div class="ss-head">${baby(st.color,MOODS[i%3],"",i)}<div><h2>${st.label} 아기 간식 <span class="soft">· ${st.name}</span></h2><p>${esc(g.msg)}</p></div>${g.times?`<span class="times">${g.times}</span>`:""}</div>
     ${nw.length?`<div class="snack-grid">${nw.map(s=>snackCard(s,false)).join("")}</div>`:g.none?"":`<p class="muted">새로 시작하는 간식은 없어요. 앞 시기 간식을 이어서 주세요.</p>`}
     <a class="more" href="${U(st.id)}">${st.label} 필수템·먹거리 전체 보기 ›</a></section>`}).join("")}
   <p class="muted" style="font-size:13px;margin-top:20px">가격은 2026년 11월 기준 예시예요. 아기마다 속도가 달라요. 알레르기가 걱정되면 소아청소년과와 상의하세요.</p></div>`;
@@ -322,7 +344,7 @@ function viewSnacks(){
 function viewBabyfood(){
   const groups=Object.entries(BRAND_GROUPS);
   return `<div class="wrap sec" style="padding-top:40px">
-  <div class="sec-head"><h1 class="h-page">이유식 브랜드 추천. <span class="soft">만들까, 살까?</span></h1><a href="${U("snacks")}">개월수별 간식 보기 ›</a></div>
+  <div class="sec-head"><h1 class="h-page">시판 이유식 추천. <span class="soft">배달 이유식 vs 상온 이유식 vs 직접 만들기.</span></h1><a href="${U("snacks")}">개월수별 간식 보기 ›</a></div>
   ${cpNote()}
   <h2 class="h-sub">세 가지 방법 비교</h2>
   <div class="ways">${FOOD_WAYS.map(w=>`<article class="way"><h3>${esc(w.n)}</h3><div class="cost num">${esc(w.cost)}</div>
@@ -330,4 +352,60 @@ function viewBabyfood(){
   ${groups.map(([g,label])=>`<h2 class="h-sub">${esc(label)}</h2><div class="brands">${BRANDS.filter(b=>b.g===g).map((b,i)=>`<article class="brand"><span class="mono" style="background:${STAGES[(i*3+g.length)%STAGES.length].color}">${esc(b.n.slice(0,1))}</span><div><h3>${esc(b.n)}</h3><p>${esc(b.d)}</p></div><a class="btn pri" href="${brandLink(b)}" target="_blank" rel="sponsored noopener">쿠팡에서 보기</a></article>`).join("")}</div>`).join("")}
   <p class="notice" style="margin-top:22px"><b>안내</b> 많이 쓰이는 브랜드를 예시로 모았고, 광고나 협찬이 아니에요. 한 끼 비용은 대략적인 예시예요. 단계(초기·중기·후기)와 알레르기 성분은 구매 전에 꼭 확인하세요.</p>
   </div>`;
+}
+
+/* ===== 자주 묻는 질문 (검색용) ===== */
+function faqFor(st){
+  const g=SNACK_GUIDE[st.id],f=st.feed,n=st.products.filter(p=>p.v==="new").map(p=>clean(p.n)),u=st.products.filter(p=>p.v!=="new").map(p=>clean(p.n));
+  const l=[
+    [`${st.label} 아기는 무엇을 얼마나 먹나요?`,`${f.main}. ${f.detail}`],
+    [`${st.label} 아기 간식은 뭘 주면 되나요?`,g.none?g.msg:`${g.times}. ${g.msg} 많이 주는 간식: ${SNACKS.filter(s=>s.from<=st.to).slice(0,4).map(s=>clean(s.n)).join(", ")}.`],
+    [`${st.label} 육아 필수템은 뭐가 있나요?`,`${st.products.map(p=>clean(p.n)).join(", ")}이 필요해요.`],
+    [`${st.label} 육아용품, 당근 중고로 사도 되나요?`,`${u.length?u.join(", ")+"은 중고로 사도 괜찮아요. ":""}${n.length?n.join(", ")+"은 위생과 안전 때문에 새상품을 추천해요.":""}`],
+    [`${st.label} 아기 발달은 어느 정도인가요?`,`${st.miles.join(", ")}. 아기마다 속도가 달라요.`]
+  ];
+  WHEN.filter(w=>w.st===st.id).forEach(w=>l.push([w.q,`${w.a}. ${w.d}`]));
+  return l;
+}
+const faqHtml=l=>`<div class="faq">${l.map(([q,a],i)=>`<details${i===0?" open":""}><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div>`;
+function homeWhen(){
+  return `<div class="wrap sec"><div class="sec-head"><h2>아기 언제부터? <span class="soft">엄빠들이 가장 많이 찾는 질문.</span></h2><a href="${U("when")}">전체 보기 ›</a></div>
+  <div class="when-chips">${WHEN.slice(0,10).map(w=>`<a href="${U("when")}" class="wchip">${esc(w.q.replace(/[?]$/,""))}<b>${esc(w.a.split(",")[0])}</b></a>`).join("")}</div>
+  <a class="food-banner" style="background:var(--mint-soft)" href="${U("checklist")}"><div><b style="color:var(--mint)">출산준비물 리스트</b><span>꼭 새상품으로 살 것, 당근 중고로 아껴도 되는 것을 나눠 정리했어요</span></div><i style="background:var(--mint)">체크리스트 보기</i></a></div>`;
+}
+function viewWhen(){
+  return `<div class="wrap sec" style="padding-top:40px">
+  <div class="sec-head"><h1 class="h-page">아기 언제부터? <span class="soft">이유식·떡뻥·물·우유·꿀 시기 총정리.</span></h1></div>
+  <div class="jump">${WHEN.map(w=>`<button class="chip" data-go="w-${w.k}">${esc(w.q.split(" ").slice(0,2).join(" "))}</button>`).join("")}</div>
+  <div class="whens">${WHEN.map((w,i)=>`<article class="when" id="w-${w.k}"><h2>${esc(w.q)}</h2><p class="ans">${esc(w.a)}</p><p>${esc(w.d)}</p><a href="${U(w.st)}">${STAGES.find(s=>s.id===w.st).label} 가이드 보기 ›</a></article>${i===5?adSlot():""}`).join("")}</div>
+  <p class="muted" style="font-size:13px;margin-top:20px">일반적인 기준이에요. 아기마다 다를 수 있으니 걱정되는 점은 소아청소년과와 상의하세요.</p></div>`;
+}
+function viewChecklist(){
+  const items=[...STAGES[0].products.map(p=>[STAGES[0],p]),...STAGES[1].products.map(p=>[STAGES[1],p])];
+  const grp=(title,sub,list)=>`<h2 class="h-sub">${title} <span class="muted" style="font-size:14px;font-weight:400">${sub}</span></h2><ul class="clist">${list.map(([st,p])=>{const id=st.id+"-"+p.k,h=S.have.has(id);
+    return `<li class="${h?"have":""}"><label><input type="checkbox" data-have="${id}" id="cl-${id}" ${h?"checked":""}><span><b>${esc(p.n)}</b><em>${esc(p.why)}</em></span></label><span class="cprice num">${rng(p.nw)}${p.us&&p.v!=="new"?`<small>당근 ${rng(p.us)}</small>`:""}</span><a class="btn ${p.v==="used"?"sec2":"pri"}" href="${p.v==="used"?daangn(p):coupang(st,p)}" target="_blank" rel="${p.v==="used"?"noopener":"sponsored noopener"}">${p.v==="used"?"당근":"쿠팡"}</a></li>`}).join("")}</ul>`;
+  const nw=items.filter(([,p])=>p.v==="new"),us=items.filter(([,p])=>p.v!=="new");
+  const total=items.reduce((a,[,p])=>a+((p.v==="used"&&p.us)?mid(p.us):mid(p.nw)),0);
+  return `<div class="wrap sec" style="padding-top:40px">
+  <div class="sec-head"><h1 class="h-page">출산준비물 리스트. <span class="soft">신생아 필수템 체크리스트.</span></h1><a href="${U("m0")}">0~1개월 가이드 ›</a></div>
+  ${cpNote()}
+  <dl class="budget num"><div><dt>준비물</dt><dd>${items.length}개</dd></div><div class="hl"><dt>꼭 새상품</dt><dd>${nw.length}개</dd></div><div><dt>당근 중고 OK</dt><dd>${us.length}개</dd></div><div><dt>예상 예산 (추천대로)</dt><dd>${won(total)}</dd></div></dl>
+  ${grp("꼭 새상품으로 사세요","입에 닿거나 안전과 직결되는 물건",nw)}
+  ${adSlot()}
+  ${grp("당근 중고로 아껴도 돼요","쓰는 기간이 짧고 세척이 쉬운 물건",us)}
+  <p class="muted" style="font-size:13px;margin-top:16px">체크한 항목은 이 기기에 저장돼요. 가격은 예시 시세예요.</p></div>`;
+}
+/* ===== 간식 성분 비교표 ===== */
+function nutritionTable(){
+  return `<h2 class="h-sub">간식 성분 비교표 <span class="muted" style="font-size:14px;font-weight:400">1회 먹는 양 기준, 이 정도면 좋아요</span></h2>
+  <div class="tbl-wrap"><table class="ntable"><thead><tr><th>간식</th><th>시작</th><th>나트륨</th><th>당류</th><th>원재료</th><th></th></tr></thead><tbody>
+  ${SNACKS.map(s=>`<tr data-t="${esc(s.t)}" class="snackrow"><td><b>${esc(clean(s.n))}</b><small>${esc(s.t)}</small></td><td class="num">${s.from}개월~</td><td>${esc(s.std.na)}</td><td>${esc(s.std.su)}</td><td>${esc(s.std.ing)}</td><td><a href="${snackLink(s)}" target="_blank" rel="sponsored noopener">쿠팡 ›</a></td></tr>`).join("")}
+  </tbody></table></div>
+  <p class="muted" style="font-size:12px;margin-top:8px">달달베이비가 정한 고르는 기준이에요. 제품 뒷면 영양성분표의 1회 제공량 수치와 비교해 보세요. 제품별 실제 성분은 쿠팡 연동 후 표시할 예정이에요.</p>`;
+}
+/* ===== 애드센스 ===== */
+const ADS=(typeof window!=="undefined"&&window.ADS)||null;
+function adSlot(){
+  if(!ADS||!ADS.client||!ADS.slot)return"";
+  return `<div class="wrap ad-wrap"><span class="ad-label">광고</span><ins class="adsbygoogle" style="display:block" data-ad-client="${esc(ADS.client)}" data-ad-slot="${esc(ADS.slot)}" data-ad-format="auto" data-full-width-responsive="true"></ins></div>`;
 }

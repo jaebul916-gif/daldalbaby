@@ -73,7 +73,7 @@ async function route(){
     else if(h==="login")html=viewLogin();
     else if(h==="join")html=viewJoin();
     else if(h==="home"||!h){html=viewHome();after=()=>fillHomeComm(seq)}
-    else if(["hot","sos","snacks","babyfood"].includes(h)||STAGES.some(s=>s.id===h))html=renderStatic(h);
+    else if(["hot","sos","snacks","babyfood","when","checklist"].includes(h)||STAGES.some(s=>s.id===h))html=renderStatic(h);
     else{html=viewHome();after=()=>fillHomeComm(seq)}
   }catch(e){html=errView(e)}
   if(seq!==routeSeq)return;
@@ -84,7 +84,9 @@ async function route(){
   if(h!==lastView&&lastView!=="")window.scrollTo(0,0);lastView=h;
   const mo=document.querySelector(".mo.on");if(mo)mo.parentElement.scrollLeft=mo.offsetLeft-mo.parentElement.offsetLeft-20;
   if(after)after();
+  pushAds();
 }
+function pushAds(){if(!window.ADS||!window.ADS.slot)return;document.querySelectorAll("ins.adsbygoogle:not([data-adsbygoogle-status])").forEach(()=>{try{(window.adsbygoogle=window.adsbygoogle||[]).push({})}catch(e){}})}
 function go(v){const u=U(v);
   if(u.startsWith("#")){if(location.hash===u)route();else location.hash=u.slice(1)}
   else location.href=u;
@@ -96,7 +98,7 @@ document.addEventListener("click",async e=>{
   const t=e.target.closest("[data-stype],[data-go],[data-cat],[data-play],[data-sos],[data-hotcat],[data-like],[data-wb],[data-del],[data-after],#me");if(!t)return;
   if(t.id==="me"){if(ME){e.preventDefault();await Store.signOut();toast("로그아웃했어요");route()}return}
   if(t.dataset.after){S.after=t.dataset.after;return}
-  if(t.dataset.stype){const v=t.dataset.stype;document.querySelectorAll("[data-stype]").forEach(b=>b.classList.toggle("on",b===t));document.querySelectorAll(".snack").forEach(el=>el.hidden=v!=="전체"&&el.dataset.t!==v);return}
+  if(t.dataset.stype){const v=t.dataset.stype;document.querySelectorAll("[data-stype]").forEach(b=>b.classList.toggle("on",b===t));document.querySelectorAll(".snack,.snackrow").forEach(el=>el.hidden=v!=="전체"&&el.dataset.t!==v);return}
   if(t.dataset.go){const el=document.getElementById(t.dataset.go);if(el)el.scrollIntoView({block:"start",behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"});document.querySelectorAll(".seg-in button").forEach(b=>b.classList.toggle("on",b===t));return}
   if(t.dataset.cat){S.cat=t.dataset.cat;$("#prod-body").innerHTML=productsBody(stageOf(S.month));return}
   if(t.dataset.sos){S.sos=t.dataset.sos;const b=$("#sos-block");if(b)b.outerHTML=sosBlock();return}
@@ -111,7 +113,7 @@ document.addEventListener("click",async e=>{
     const f=document.createElement("iframe");f.className="vframe";f.src=`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1`;f.title="유튜브 영상";f.allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";f.allowFullscreen=true;t.replaceWith(f)}
 });
 document.addEventListener("change",async e=>{const t=e.target;
-  if(t.dataset.have){t.checked?S.have.add(t.dataset.have):S.have.delete(t.dataset.have);LS.set("dd-have",[...S.have]);$("#prod-body").innerHTML=productsBody(stageOf(S.month));return}
+  if(t.dataset.have){t.checked?S.have.add(t.dataset.have):S.have.delete(t.dataset.have);LS.set("dd-have",[...S.have]);const pb=$("#prod-body");if(pb)pb.innerHTML=productsBody(stageOf(S.month));else{const li=t.closest("li");if(li)li.classList.toggle("have",t.checked)}return}
   if(t.id==="used-only"){S.usedOnly=t.checked;$("#prod-body").innerHTML=productsBody(stageOf(S.month));return}
   if(t.id==="birth"){LS.set("dd-birth",t.value);const bo=birthOut(t.value);if(bo.m!=null){S.month=bo.m;route()}else $("#birth-out").innerHTML=bo.txt;return}
   if(t.id==="w-board"){S.writeBoard=t.value;route();return}

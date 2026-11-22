@@ -1,4 +1,6 @@
 /* 달달베이비 브라우저 전용 코드: 저장소(Supabase/데모), 라우터, 이벤트 */
+// 카카오 로그인에서 돌아올 때 주소 뒤에 붙는 값(#access_token, #error)은 Supabase가 읽기 전에 따로 기억해 둬요.
+const BOOT_HASH=location.hash;
 const sb=SB_ON?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
 let ME=null;
 async function hash(s){try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}catch(e){let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))|0;return"x"+h}}
@@ -23,8 +25,14 @@ const Local={
 const POST_COLS="id,board,title,body,price,region,status,like_count,comment_count,created_at,author_id,author:profiles!posts_author_id_fkey(nick)";
 const Remote={
   _map(r){return{id:r.id,b:r.board,t:r.title,body:r.body,a:(r.author&&r.author.nick)||"알 수 없음",at:new Date(r.created_at).getTime(),h:r.like_count,cn:r.comment_count,price:r.price,rg:r.region,st:r.status,mine:!!ME&&r.author_id===ME.id}},
-  async _me(s){if(!s){ME=null;return}const{data}=await sb.from("profiles").select("nick").eq("id",s.user.id).maybeSingle();ME={id:s.user.id,nick:(data&&data.nick)||(s.user.user_metadata&&s.user.user_metadata.nick)||"엄빠"}},
-  async init(){const{data}=await sb.auth.getSession();await this._me(data.session);sb.auth.onAuthStateChange((ev,s)=>{if(ev==="SIGNED_IN"||ev==="SIGNED_OUT")setTimeout(()=>this._me(s).then(updateMe),0)})},
+  // 이메일이 없는 카카오 회원도 있어서 닉네임은 profiles → 가입 정보(nick) → 카카오 닉네임 순서로 찾아요.
+  async _me(s){if(!s){ME=null;return}const{data}=await sb.from("profiles").select("nick").eq("id",s.user.id).maybeSingle();const m=s.user.user_metadata||{};
+    ME={id:s.user.id,nick:(data&&data.nick)||m.nick||m.nickname||m.name||m.full_name||m.preferred_username||m.user_name||"엄빠"}},
+  async init(){
+    if(/error_description=/.test(BOOT_HASH)){const q=new URLSearchParams(BOOT_HASH.slice(1));KAKAO_ERR=/access_denied/.test(q.get("error")||"")?"카카오 로그인을 취소했어요.":"카카오 로그인에 실패했어요. 잠시 뒤 다시 시도해 주세요.";history.replaceState(null,"",location.pathname+location.search)}
+    const{data}=await sb.auth.getSession();await this._me(data.session);sb.auth.onAuthStateChange((ev,s)=>{if(ev==="SIGNED_IN"||ev==="SIGNED_OUT")setTimeout(()=>this._me(s).then(updateMe),0)})},
+  async kakao(after){try{sessionStorage.setItem("dd-kakao",after||"")}catch(e){}
+    const{error}=await sb.auth.signInWithOAuth({provider:"kakao",options:{redirectTo:window.location.origin}});if(error)return{err:krErr(error)};return{}},
   async list(b,q,lim=50){let r=sb.from("posts").select(POST_COLS).eq("board",b).order("created_at",{ascending:false}).limit(lim);
     const qq=(q||"").replace(/[,()%*\\]/g," ").trim();if(qq)r=r.or(`title.ilike.%${qq}%,body.ilike.%${qq}%`);
     const{data,error}=await r;if(error)throw error;return data.map(x=>this._map(x))},
@@ -44,6 +52,11 @@ const Remote={
   async signOut(){await sb.auth.signOut();ME=null}
 };
 const Store=SB_ON?Remote:Local;
+let KAKAO_ERR="";
+// 카카오 로그인에서 돌아오면 인사하고, 로그인 전에 보던 화면으로 보내드려요.
+function kakaoReturn(){let a=null;try{a=sessionStorage.getItem("dd-kakao");sessionStorage.removeItem("dd-kakao")}catch(e){}
+  if(KAKAO_ERR){toast(KAKAO_ERR);KAKAO_ERR="";return false}
+  if(a===null||!ME)return false;toast(ME.nick+" 님, 반가워요!");if(a&&a!=="home"&&a!=="login"&&a!=="join"){go(a);return true}return false}
 async function fillBoard(b,seq){
   const el=$("#plist");if(!el)return;
   try{const l=await Store.list(b,S.q);if(seq!==routeSeq)return;
@@ -95,9 +108,11 @@ function toast(t){const d=document.createElement("div");d.className="toast";d.te
 const busy=(f,on)=>{const b=f.querySelector("button[type=submit]");if(b){b.disabled=on;b.style.opacity=on?.6:1}};
 
 document.addEventListener("click",async e=>{
-  const t=e.target.closest("[data-stype],[data-go],[data-cat],[data-play],[data-sos],[data-hotcat],[data-like],[data-wb],[data-del],[data-after],#me");if(!t)return;
+  const t=e.target.closest("[data-kakao],[data-stype],[data-go],[data-cat],[data-play],[data-sos],[data-hotcat],[data-like],[data-wb],[data-del],[data-after],#me");if(!t)return;
   if(t.id==="me"){if(ME){e.preventDefault();await Store.signOut();toast("로그아웃했어요");route()}return}
   if(t.dataset.after){S.after=t.dataset.after;return}
+  if(t.dataset.kakao){if(!SB_ON){toast("미리보기에서는 카카오 로그인을 쓸 수 없어요. 실제 사이트에서 눌러주세요.");return}
+    t.disabled=true;const r=await Store.kakao(S.after||(MPA&&PAGE!=="home"?(PAGE==="community"?"free":PAGE):""));if(r.err){toast(r.err);t.disabled=false}return}
   if(t.dataset.stype){const v=t.dataset.stype;document.querySelectorAll("[data-stype]").forEach(b=>b.classList.toggle("on",b===t));document.querySelectorAll(".snack,.snackrow").forEach(el=>el.hidden=v!=="전체"&&el.dataset.t!==v);return}
   if(t.dataset.go){const el=document.getElementById(t.dataset.go);if(el)el.scrollIntoView({block:"start",behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"});document.querySelectorAll(".seg-in button").forEach(b=>b.classList.toggle("on",b===t));return}
   if(t.dataset.cat){S.cat=t.dataset.cat;$("#prod-body").innerHTML=productsBody(stageOf(S.month));return}
@@ -143,4 +158,4 @@ document.addEventListener("submit",async e=>{e.preventDefault();const f=e.target
 });
 window.addEventListener("hashchange",route);
 if(window.DD)setPage(window.DD.page,window.DD.root);
-Store.init().catch(()=>{}).finally(route);
+Store.init().catch(()=>{}).finally(()=>{updateMe();if(!kakaoReturn())route()});

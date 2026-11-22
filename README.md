@@ -82,3 +82,12 @@ cd dist && python3 -m http.server 8000
 1. 애드센스에 `daldalbaby.com`을 사이트로 추가하고, 게시자 ID(`ca-pub-`로 시작)를 `site.config.json`의 `adsenseClient`에 넣은 뒤 배포해요. 그러면 모든 페이지에 애드센스 스크립트와 `ads.txt`가 자동으로 들어가요.
 2. 애드센스 사이트 검토가 끝나면 **광고 → 자동 광고**에서 전면 광고(비네트)와 앵커 광고를 켜요. 당근 링크로 나갈 때 등 페이지를 옮길 때 전면 광고가 떠요.
 3. 본문 중간 광고 자리를 쓰려면 디스플레이 광고 단위를 만들고 그 슬롯 번호를 `adsenseSlot`에 넣어요. 비워두면 자동 광고만 나와요.
+
+## 카카오 로그인
+
+로그인·회원가입 화면 맨 위에 카카오 버튼이 있어요. 카카오 회원은 이메일 없이 카카오 닉네임으로 가입돼요.
+
+1. Supabase **Authentication → Sign In / Providers → Kakao**를 켜고 REST API 키와 Client Secret을 넣어요. 이메일 동의를 받지 않으면 **Allow users without an email**을 켜요.
+2. 카카오 디벨로퍼스의 Redirect URI에 `https://vzozcsrmwdgsobyvnbjl.supabase.co/auth/v1/callback`을 등록해요.
+3. 로그인 뒤에는 사이트 첫 화면(`https://daldalbaby.com`)으로 돌아와요. 이 주소는 Supabase **URL Configuration**의 Site URL과 같아야 해요.
+4. `setup.sql`을 이미 실행한 DB라면 `supabase/kakao-login.sql`을 SQL Editor에서 한 번 실행해요. 카카오 닉네임이 겹치거나, 12자를 넘거나, 비어 있어도 가입이 막히지 않게 닉네임을 정리해 주는 업데이트예요.

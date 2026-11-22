@@ -82,7 +82,7 @@ function viewHome(){
   const saved=LS.get("dd-birth",""),bo=birthOut(saved);
   const hotTop=Object.entries(HOT).slice(0,4).map(([c,l])=>hotCard(c,l[0],0,true)).join("");
   return `<div class="wrap hero"><div class="hero-grid">
-    <div><p class="hero-sub">${TAGLINE}</p><h1>우리 아기에게<br><em>딱 맞는 것만.</em></h1>
+    <div><p class="hero-sub">${TAGLINE}</p><h1><span class="h1-kw">개월수별 육아&nbsp;· 이유식&nbsp;· 간식&nbsp;· 응급처치 가이드, <span style="white-space:nowrap">달달베이비</span></span>우리 아기에게<br><em>딱 맞는 것만.</em></h1>
       <p class="for-who"><b>“이번 달엔 뭘 해줘야 하지?”</b> 개월수마다 뭘 사고, 뭘 먹이고, 뭘 조심해야 할지 몰라 막막한 초보 엄빠를 위해 만들었어요. 우리 아기 개월 수에 맞춰 꼭 필요한 것만 골라드려요.</p>
       <p class="maker">${HEART("var(--pink)",15)} ${MAKER}</p>
       <div class="birth"><label for="birth">아기 생일</label><input type="date" id="birth" value="${esc(saved)}" max="${new Date().toISOString().slice(0,10)}"></div>
@@ -168,7 +168,9 @@ function viewHot(){
   ${hotBadge()}
   <p class="hot-note">${HOT_NOTE}</p>
   ${cpNote()}
+  <h2 class="h-sub hot-h2">이번 주 ${Object.keys(HOT).map(c=>c.split("·")[0]).join("&nbsp;· ")} 유아용품 인기 순위</h2>
   <div class="filters">${Object.keys(HOT).map(c=>`<button class="chip${c===S.hotCat?" on":""}" data-hotcat="${esc(c)}">${esc(c)}</button>`).join("")}</div>
+  <h3 class="hot-cat-h">이번 주 ${esc(S.hotCat)} 인기 TOP 3</h3>
   <div class="podium">${l.map((h,i)=>hotCard(S.hotCat,h,i)).join("")}</div></div>
   ${faqSec("hot","육아템 자주 묻는 질문.")}${related("hot")}`;
 }

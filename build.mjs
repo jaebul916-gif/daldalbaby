@@ -14,10 +14,13 @@ const OUT = path.join(here, "dist");
 const TODAY = new Date().toISOString().slice(0, 10);
 
 // 브라우저와 같은 화면 함수를 Node 안에서 실행해서 HTML을 미리 만들어요.
-const ctx = vm.createContext({ console, location: { hostname: "build", hash: "" }, window: {} });
+// 애드센스: site.config.json 의 adsenseClient(ca-pub-...)가 있을 때만 켜져요.
+const ADS = cfg.adsenseClient ? { client: cfg.adsenseClient.trim(), slot: (cfg.adsenseSlot || "").trim() } : null;
+const ctx = vm.createContext({ console, location: { hostname: "build", hash: "" }, window: ADS ? { ADS } : {} });
 for (const f of ["data.js", "core.js"]) vm.runInContext(src(f), ctx, { filename: f });
 const run = expr => vm.runInContext(expr, ctx);
 const STAGES = run("STAGES");
+const WHEN = run("WHEN");
 const HOTCATS = run("Object.keys(HOT)");
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -26,30 +29,40 @@ const clip = (s, n) => (s.length > n ? s.slice(0, n - 1).trim() + "…" : s);
 // 페이지 목록과 검색용 문구
 const pages = [
   { page: "home", path: "", priority: "1.0",
-    title: "달달베이비 | 개월수별 육아 필수템 · 당근 vs 새상품 비교 · 아기 간식",
+    title: "달달베이비 | 개월수별 육아 필수템 · 출산준비물 리스트 · 아기 간식 언제부터",
     ogTitle: "달달베이비 · 개월수별 육아 필수템, 당근 vs 새상품 비교",
-    desc: "초보 엄빠를 위한 개월수별 육아 필수템 가이드. 0~36개월 시기별 육아용품을 당근 중고 시세와 새상품 가격으로 비교하고, 먹어도 되는 음식, 영아 하임리히법 영상, 엄빠 커뮤니티까지." },
+    desc: "초보 엄빠를 위한 개월수별 육아 필수템 가이드. 출산준비물 리스트부터 0~36개월 육아용품 당근 중고 vs 새상품 가격 비교, 이유식·간식 언제부터, 영아 하임리히법까지." },
   ...STAGES.map(s => ({
     page: s.id, path: `month/${s.slug}/`, priority: "0.9",
-    title: `${s.label} 아기 육아 필수템 · 당근 vs 새상품 비교 (${s.name}) | 달달베이비`,
+    title: `${s.kw} 총정리 · 당근 vs 새상품 | 달달베이비`,
     ogTitle: `${s.label} · ${s.title}`,
     desc: clip(`${s.label} 아기(${s.name}) 육아 필수템 ${s.products.length}개를 당근 중고 시세와 새상품 가격으로 비교해요. ${s.sum} ${s.feed.main}, 안전 수칙과 영상까지.`, 160),
-    crumb: s.label,
+    crumb: s.label, faq: s.id,
   })),
+  { page: "checklist", path: "checklist/", priority: "0.9",
+    title: "출산준비물 리스트 · 신생아 필수템 체크리스트 (새상품 vs 당근 중고) | 달달베이비",
+    ogTitle: "출산준비물 리스트, 새상품으로 살 것 vs 당근으로 아낄 것",
+    desc: "출산 전에 준비할 신생아 필수템을 체크리스트로 정리했어요. 젖병·카시트처럼 꼭 새상품으로 살 것과 아기침대·바운서처럼 당근 중고로 아껴도 되는 것을 나눴어요.",
+    crumb: "출산준비물 리스트" },
+  { page: "when", path: "when/", priority: "0.9",
+    title: "아기 언제부터? 이유식·떡뻥·물·우유·꿀·보행기 시기 총정리 | 달달베이비",
+    ogTitle: "아기 언제부터? 엄빠들이 가장 많이 묻는 시기 총정리",
+    desc: clip(`이유식 언제부터, 떡뻥 언제부터, 아기 물 언제부터, 생우유·꿀·주스·보행기 언제부터까지. 엄빠들이 가장 많이 검색하는 ${WHEN.length}가지 시기를 한눈에 정리했어요.`, 160),
+    crumb: "아기 언제부터", faqWhen: true },
   { page: "sos", path: "emergency/", priority: "0.9",
-    title: "영아 하임리히법·아기 심폐소생술(CPR) 단계별 방법과 영상 | 달달베이비",
+    title: "영아 하임리히법 · 아기 기도막힘 응급처치와 심폐소생술 영상 | 달달베이비",
     ogTitle: "아기가 숨을 못 쉴 때, 영아 하임리히법과 CPR",
-    desc: "돌 전 아기 하임리히법(등 두드리기·가슴 압박), 돌 이후 복부 밀어올리기, 영아 심폐소생술을 단계별로 정리하고 소아과·소방 교육 영상을 모았어요." },
+    desc: "아기가 음식이 목에 걸렸을 때. 돌 전 영아 하임리히법(등 두드리기·가슴 압박), 돌 이후 복부 밀어올리기, 영아 심폐소생술을 단계별로 정리하고 교육 영상을 모았어요.", crumb: "영아 하임리히법" },
   { page: "snacks", path: "snacks/", priority: "0.9",
-    title: "개월수별 아기 간식 · 떡뻥·과자·음료 언제부터? | 달달베이비",
+    title: "아기 간식 언제부터? 개월수별 떡뻥·과자·음료 추천과 성분 비교 | 달달베이비",
     ogTitle: "개월수별 아기 간식, 떡뻥부터 주스까지",
-    desc: "6개월 떡뻥부터 돌 이후 우유·주스, 두 돌 간식까지. 개월수별로 먹어도 되는 아기 간식·과자·음료와 고르는 기준, 하루 몇 번 줄지 정리했어요." },
+    desc: "6개월 떡뻥부터 돌 이후 우유·주스, 두 돌 간식까지. 개월수별로 먹어도 되는 아기 간식·과자·음료와 나트륨·당 성분 기준, 하루 몇 번 줄지 정리했어요.", crumb: "아기 간식" },
   { page: "babyfood", path: "babyfood/", priority: "0.8",
-    title: "이유식 브랜드 추천 · 배달 이유식 vs 상온 이유식 vs 직접 만들기 비교 | 달달베이비",
+    title: "시판 이유식 추천 · 배달 이유식 vs 상온 이유식 브랜드 비교 | 달달베이비",
     ogTitle: "이유식, 만들까 살까? 브랜드 추천과 비용 비교",
-    desc: "직접 만들기, 배달 이유식, 상온 이유식의 한 끼 비용과 장단점을 비교하고 많이 쓰는 이유식·아기 간식 브랜드를 모았어요." },
+    desc: "시판 이유식 뭐가 좋을까? 직접 만들기, 배달 이유식, 상온 이유식의 한 끼 비용과 장단점을 비교하고 많이 쓰는 이유식 브랜드를 모았어요.", crumb: "이유식 추천" },
   { page: "hot", path: "hot/", priority: "0.7",
-    title: "이번 달 육아템 핫템 TOP 3 · 젖병·기저귀·이유식·장난감 | 달달베이비",
+    title: "요즘 육아템 추천 · 이번 달 핫템 TOP 3 (젖병·기저귀·장난감) | 달달베이비",
     ogTitle: "이번 달 육아 핫템 TOP 3",
     desc: `최근 30일 엄빠들이 가장 많이 담은 육아템을 ${HOTCATS.join(", ")} 카테고리별 1~3위로 보여드려요.` },
   { page: "community", path: "community/", priority: "0.6",
@@ -64,12 +77,16 @@ function jsonLd(p) {
   if (p.page === "home") items.push({ "@context": "https://schema.org", "@type": "WebSite", name: "달달베이비", url: SITE + "/", inLanguage: "ko-KR", description: p.desc });
   if (p.crumb) items.push({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
     { "@type": "ListItem", position: 1, name: "달달베이비", item: SITE + "/" },
-    { "@type": "ListItem", position: 2, name: `${p.crumb} 가이드`, item: url }] });
+    { "@type": "ListItem", position: 2, name: /개월$/.test(p.crumb) ? `${p.crumb} 가이드` : p.crumb, item: url }] });
   if (p.page === "sos") {
     const infant = run('SOS.find(x=>x.id==="infant")');
     items.push({ "@context": "https://schema.org", "@type": "HowTo", name: "돌 전 아기(영아) 기도폐쇄 응급처치, 하임리히법",
       step: infant.steps.map(([n, t], i) => ({ "@type": "HowToStep", position: i + 1, name: n, text: t })) });
   }
+  const faqList = p.faq ? run(`faqFor(STAGES.find(s=>s.id===${JSON.stringify(p.faq)}))`)
+    : p.faqWhen ? WHEN.map(w => [w.q, `${w.a}. ${w.d}`]) : null;
+  if (faqList) items.push({ "@context": "https://schema.org", "@type": "FAQPage",
+    mainEntity: faqList.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) });
   return items.map(o => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, "\\u003c")}</script>`).join("\n");
 }
 
@@ -77,6 +94,7 @@ function verifyMeta() {
   let m = "";
   if (cfg.naverVerification) m += `<meta name="naver-site-verification" content="${esc(cfg.naverVerification)}">\n`;
   if (cfg.googleVerification) m += `<meta name="google-site-verification" content="${esc(cfg.googleVerification)}">\n`;
+  if (ADS) m += `<meta name="google-adsense-account" content="${esc(ADS.client)}">\n<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(ADS.client)}" crossorigin="anonymous"></script>\n`;
   return m;
 }
 
@@ -95,7 +113,7 @@ function renderPage(p, { single = false, root: rootOverride } = {}) {
     APP: run(`renderStatic(${JSON.stringify(view)})`),
     TABS: run(`layoutTabs(${JSON.stringify(view)})`),
     FOOTER: run("layoutFooter()"),
-    DD: single ? "" : `<script>window.DD=${JSON.stringify({ page: p.page, root })}</script>`,
+    DD: (single ? "" : `<script>window.DD=${JSON.stringify({ page: p.page, root })}</script>`) + (ADS ? `\n<script>window.ADS=${JSON.stringify(ADS)}</script>` : ""),
     SCRIPTS: single
       ? ["data.js", "core.js", "client.js"].map(f => `<script>\n${src(f)}</script>`).join("\n")
       : ["data.js", "core.js", "client.js"].map(f => `<script src="${root}assets/${f}?v=${TODAY}"></script>`).join("\n"),
@@ -123,6 +141,8 @@ fs.writeFileSync(path.join(OUT, "sitemap.xml"),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
   pages.map(p => `  <url><loc>${SITE}/${p.path}</loc><lastmod>${TODAY}</lastmod><priority>${p.priority}</priority></url>`).join("\n") +
   `\n</urlset>\n`);
+// 애드센스 판매자 확인용 ads.txt
+if (ADS) fs.writeFileSync(path.join(OUT, "ads.txt"), `google.com, ${ADS.client.replace(/^ca-/, "")}, DIRECT, f08c47fec0942fa0\n`);
 fs.writeFileSync(path.join(OUT, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 
 if (process.argv.includes("--single")) {

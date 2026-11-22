@@ -399,3 +399,22 @@ footer b{color:var(--ink)}
 
 .hero .for-who b{color:var(--ink);font-weight:700}
 .foot-about{font-size:13px;color:var(--muted);margin:4px 0 0}
+
+/* 핫템 카드: 순위 · 사진 · 브랜드/상품명 · 가격 · 추천 이유 · 쿠팡 버튼 */
+.hot-note{font-size:14px;color:var(--muted);margin:-4px 0 10px}
+.hot-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.hot{gap:12px}
+.hot .medal{position:absolute;top:14px;left:14px;z-index:1;font-size:16px!important;line-height:1;background:var(--pink);color:#fff;padding:6px 10px;border-radius:999px;font-family:var(--f-cute)}
+.hot.first .medal{background:var(--pink)}
+.hot-img{position:relative;aspect-ratio:1/1;border-radius:16px;background:var(--card);display:grid;place-items:center;overflow:hidden}
+.hot-img span{font-size:52px;opacity:.85}
+.hot-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff}
+.hot-info{display:flex;flex-direction:column;gap:4px;min-width:0}
+.hot .hot-brand{font-size:13px;font-weight:700;color:var(--pink);margin:0}
+.hot .hot-cat{font-size:12px;color:var(--muted)}
+.hot h3{font-size:18px;line-height:1.35}
+.hot .price{font-size:20px;font-weight:900;margin:2px 0;color:var(--ink)}
+.hot .price .muted{font-size:14px;font-weight:500}
+.hot .why{font-size:14px;color:var(--muted);margin:0}
+.hot .btn{margin-top:auto}
+@media (max-width:760px){.podium .hot,.hot-row .hot{display:grid;grid-template-columns:112px 1fr;align-items:start}.podium .hot .btn,.hot-row .hot .btn{grid-column:1/-1}.hot-img span{font-size:40px}}

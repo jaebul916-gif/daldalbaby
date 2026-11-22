@@ -5,7 +5,73 @@ const SUPABASE_URL = "https://vzozcsrmwdgsobyvnbjl.supabase.co";
 const SUPABASE_KEY = "sb_publishable_QjyTNDba9BCUz_hX_rpjlQ_GWpWiII8";
 
 const COUPANG_LINKS = {
-  // "m0-bottle": "https://link.coupang.com/a/xxxxxx",
+  "m0-bottle": "https://link.coupang.com/a/iSodRFbwZg",  // 젖병 (PPSU 160ml)
+  "m0-sterilizer": "https://link.coupang.com/a/iSofyOQNqu",  // UV 젖병 소독기
+  "m0-diaper1": "https://link.coupang.com/a/iSohtpVc2m",  // 신생아 기저귀 (1단계)
+  "m0-swaddle": "https://link.coupang.com/a/iSoisennMa",  // 속싸개·스와들업
+  "m0-crib": "https://link.coupang.com/a/iSojdGtkZ2",  // 아기침대
+  "m0-carseat0": "https://link.coupang.com/a/iSokh4UbjE",  // 신생아 카시트 (바구니형)
+  "m0-bath": "https://link.coupang.com/a/iSoll36dK8",  // 아기 욕조
+  "m0-bwbook": "https://link.coupang.com/a/iSomsgnSBo",  // 흑백 초점책
+  "m2-mobile": "https://link.coupang.com/a/iSonz09q68",  // 아기 모빌
+  "m2-bouncer": "https://link.coupang.com/a/iSoovfToyW",  // 바운서
+  "m2-carrier": "https://link.coupang.com/a/iSoplBJDFs",  // 아기띠 / 힙시트
+  "m2-stroller": "https://link.coupang.com/a/iSoql3sK9Q",  // 디럭스 유모차
+  "m2-gauze": "https://link.coupang.com/a/iSorBap3F6",  // 가제 손수건 (10매)
+  "m2-diaper2": "https://link.coupang.com/a/iSosvDQ1lI",  // 기저귀 (2단계)
+  "m2-clothbook": "https://link.coupang.com/a/iSothWGHNQ",  // 헝겊책 / 바스락 책
+  "m4-teether": "https://link.coupang.com/a/iSot9TAXiS",  // 치발기
+  "m4-playgym": "https://link.coupang.com/a/iSou4oSJXw",  // 아기 체육관 (플레이짐)
+  "m4-mat": "https://link.coupang.com/a/iSov6xEWho",  // 층간소음 놀이매트
+  "m4-jumperoo": "https://link.coupang.com/a/iSowQFu4s0",  // 점퍼루 / 쏘서
+  "m4-nail": "https://link.coupang.com/a/iSoxMpsUdU",  // 전동 손톱 다듬기
+  "m4-peekbook": "https://link.coupang.com/a/iSoyOpO9Aq",  // 까꿍 보드북
+  "m6-highchair": "https://link.coupang.com/a/iSozG4lCaO",  // 아기 식탁 의자 (하이체어)
+  "m6-blender": "https://link.coupang.com/a/iSoCLfHDCC",  // 이유식 마스터기 / 블렌더
+  "m6-spoon": "https://link.coupang.com/a/iSoElX1D1U",  // 실리콘 이유식 스푼·볼 세트
+  "m6-cube": "https://link.coupang.com/a/iSoFmTppYq",  // 이유식 큐브 보관용기
+  "m6-bib": "https://link.coupang.com/a/iSoGmkRvKS",  // 실리콘 턱받이
+  "m6-diaper3": "https://link.coupang.com/a/iSoHiZj9O0",  // 팬티형 기저귀 (3단계)
+  "m6-jolly": "https://link.coupang.com/a/iSoIlzTybA",  // 휴대용 절충형 유모차
+  "m6-firstset": "https://link.coupang.com/a/iSoJqpBnG0",  // 아기 첫 그림책 전집
+  "m7-strawcup": "https://link.coupang.com/a/iSoJ9WOCFU",  // 빨대컵
+  "m7-gate": "https://link.coupang.com/a/iSoKSkivpQ",  // 안전문 (베이비게이트)
+  "m7-guard": "https://link.coupang.com/a/iSoLQAxAlg",  // 모서리 보호대·콘센트 커버
+  "m7-learnhome": "https://link.coupang.com/a/iSoMx08ZvE",  // 러닝홈 / 소리 나는 장난감
+  "m7-carseat1": "https://link.coupang.com/a/iSoNk9LbhI",  // 컨버터블 카시트
+  "m7-flapbook": "https://link.coupang.com/a/iSoNWoT0qy",  // 플랩북 / 사운드북
+  "m9-walker": "https://link.coupang.com/a/iSoOXLqoDs",  // 밀고 다니는 걸음마 보조기
+  "m9-plate": "https://link.coupang.com/a/iSoPJYECJg",  // 흡착 식판
+  "m9-tent": "https://link.coupang.com/a/iSoQrzu5hA",  // 놀이 텐트 / 볼풀
+  "m9-brush": "https://link.coupang.com/a/iSoRpMROVw",  // 유아 칫솔·불소치약
+  "m9-diaper4": "https://link.coupang.com/a/iSoSj78gvI",  // 팬티형 기저귀 (4단계)
+  "m9-naturebook": "https://link.coupang.com/a/iSoTi2kV5M",  // 자연관찰·생활동화 전집
+  "m12-ridecar": "https://link.coupang.com/a/iSoT2JCvym",  // 붕붕카 (승용완구)
+  "m12-shoes": "https://link.coupang.com/a/iSoUUhyUSW",  // 첫 걸음마 신발
+  "m12-booster": "https://link.coupang.com/a/iSoVE4fM6e",  // 부스터 의자
+  "m12-blocks": "https://link.coupang.com/a/iSoWvv5XUW",  // 대형 블록
+  "m12-cutlery": "https://link.coupang.com/a/iSoXuriE5Q",  // 유아 수저·포크 세트
+  "m12-storybook": "https://link.coupang.com/a/iSoYl2VQ7g",  // 창작동화 전집
+  "m19-toddlerbed": "https://link.coupang.com/a/iSoZeOWLi8",  // 유아 침대 / 분리수면 매트
+  "m19-potty": "https://link.coupang.com/a/iSoZSrqTE4",  // 유아 변기
+  "m19-trike": "https://link.coupang.com/a/iSo0wafAoD",  // 세발자전거
+  "m19-kitchen": "https://link.coupang.com/a/iSo1ymActU",  // 주방놀이 세트
+  "m19-magnet": "https://link.coupang.com/a/iSo2bBt8kS",  // 자석 블록
+  "m19-junior": "https://link.coupang.com/re/AFFSRP?lptag=AF2773134&pageKey=%EC%A3%BC%EB%8B%88%EC%96%B4%20%EC%B9%B4%EC%8B%9C%ED%8A%B8&traceid=V0-181-9a447400d68faa20",  // 주니어 카시트
+  "m19-classicbook": "https://link.coupang.com/a/iSo5eUEgDY",  // 명작·인성동화 전집
+  "snack-home": "https://link.coupang.com/a/iSo6bmu3k4",  // 직접 만들기
+  "snack-delivery": "https://link.coupang.com/a/iSo6Sn9fLo",  // 배달 이유식 (냉장·정기배송)
+  "snack-shelf": "https://link.coupang.com/a/iSo7C759CC",  // 상온 이유식 (파우치·용기)
+  "snack-bonjuk": "https://link.coupang.com/a/iSo8lLyhBQ",  // 베이비본죽
+  "snack-jjangjuk": "https://link.coupang.com/a/iSo80mAmbI",  // 짱죽
+  "snack-elvins": "https://link.coupang.com/a/iSo9HztDAO",  // 엘빈즈
+  "snack-lusol": "https://link.coupang.com/a/iSpajg0lJ6",  // 루솔
+  "snack-baenaetmeal": "https://link.coupang.com/a/iSpa1j3YoC",  // 배냇밀
+  "snack-mammameal": "https://link.coupang.com/a/iSpbK3KHO8",  // 맘마밀 (매일유업)
+  "snack-bebecook": "https://link.coupang.com/a/iSpcopkDSe",  // 베베쿡
+  "snack-ivenet": "https://link.coupang.com/a/iSpdgdLhsa",  // 아이배냇
+  "snack-ikkoya": "https://link.coupang.com/a/iSpeaSIVeC",  // 아이꼬야 (남양유업)
+  "snack-foodis": "https://link.coupang.com/a/iSpeVWaZoY",  // 일동후디스
 };
 
 const STAGES = [

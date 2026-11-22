@@ -2,6 +2,16 @@
 -- Supabase 대시보드 > SQL Editor > New query 에 전체를 붙여넣고 Run 을 누르세요.
 -- 여러 번 실행해도 안전하게 만들었어요.
 
+-- 0) 안전장치: 다른 서비스(예: 엄배송)가 쓰는 Supabase 프로젝트에서 실행하면 멈춰요.
+--    달달베이비는 반드시 전용 Supabase 프로젝트에서 실행하세요.
+do $$
+begin
+  if exists (select 1 from information_schema.tables where table_schema='public' and table_name='profiles')
+     and not exists (select 1 from information_schema.columns where table_schema='public' and table_name='profiles' and column_name='nick') then
+    raise exception '이 DB에는 다른 서비스의 profiles 테이블이 있어요. 달달베이비 전용 Supabase 프로젝트를 새로 만들어 거기서 실행하세요.';
+  end if;
+end $$;
+
 -- 1) 회원 프로필 (닉네임, 아기 개월 수)
 create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,

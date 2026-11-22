@@ -148,7 +148,7 @@ fs.writeFileSync(path.join(OUT, "robots.txt"), `User-agent: *\nAllow: /\n\nSitem
 
 if (process.argv.includes("--single")) {
   const html = renderPage(pages[0], { single: true })
-    .replace(/<!doctype html>\s*<html lang="ko">\s*<head>\s*<meta charset="utf-8">\s*<meta name="viewport"[^>]*>\s*/i, "")
+    .replace(/<!doctype html>\s*<html lang="ko"[^>]*>\s*<head>\s*<meta charset="utf-8">\s*<meta name="viewport"[^>]*>\s*/i, "")
     .replace(/<\/head>\s*<body>/, "").replace(/<\/body>\s*<\/html>\s*$/, "");
   fs.writeFileSync(path.join(OUT, "preview.html"), html);
 }

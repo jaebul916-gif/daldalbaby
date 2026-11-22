@@ -8,6 +8,7 @@
   --f-body:"Noto Sans KR",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
   --f-cute:"Jua","Noto Sans KR",system-ui,sans-serif;
   --r:22px;
+  color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#000000; --bg2:#161617; --card:#1C1C1E; --ink:#F5F5F7; --muted:#A1A1A6; --line:#2C2C2E;

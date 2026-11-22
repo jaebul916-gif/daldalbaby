@@ -64,7 +64,7 @@ const pages = [
   { page: "hot", path: "hot/", priority: "0.7",
     title: "요즘 육아템 추천 · 이번 달 핫템 TOP 3 (젖병·기저귀·장난감) | 달달베이비",
     ogTitle: "이번 달 육아 핫템 TOP 3",
-    desc: `요즘 엄빠들이 많이 사는 육아템 추천. 최근 30일 가장 많이 담은 ${HOTCATS.join(", ")} 육아템을 카테고리별 1~3위로 보여드려요.`, crumb: "이번 달 핫템" },
+    desc: `요즘 엄빠들이 많이 사는 육아템 추천. 쿠팡 육아 인기 상품·리뷰를 바탕으로 ${HOTCATS.join(", ")} 카테고리별 1~3위를 브랜드·가격과 함께 골랐어요.`, crumb: "이번 달 핫템" },
   { page: "community", path: "community/", priority: "0.6",
     title: "엄빠 커뮤니티 · 자유게시판·육아 질문답변·사고팔아요 | 달달베이비",
     ogTitle: "달달베이비 엄빠 커뮤니티",

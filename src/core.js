@@ -80,7 +80,7 @@ function birthOut(v){
 /* ===== 화면: 홈 ===== */
 function viewHome(){
   const saved=LS.get("dd-birth",""),bo=birthOut(saved);
-  const hotTop=Object.entries(HOT).slice(0,4).map(([c,l])=>`<a class="tile" href="${hotHref(c)}" data-hotcat="${esc(c)}"><span class="eb">${esc(c)}</span><span class="rank">1위</span><h3>${esc(l[0].n)}</h3><p>${won(l[0].p)} · ${esc(l[0].why)}</p></a>`).join("");
+  const hotTop=Object.entries(HOT).slice(0,4).map(([c,l])=>hotCard(c,l[0],0,true)).join("");
   return `<div class="wrap hero"><div class="hero-grid">
     <div><p class="hero-sub">${TAGLINE}</p><h1>우리 아기에게<br><em>딱 맞는 것만.</em></h1>
       <p class="for-who"><b>“이번 달엔 뭘 해줘야 하지?”</b> 개월수마다 뭘 사고, 뭘 먹이고, 뭘 조심해야 할지 몰라 막막한 초보 엄빠를 위해 만들었어요. 우리 아기 개월 수에 맞춰 꼭 필요한 것만 골라드려요.</p>
@@ -94,7 +94,7 @@ function viewHome(){
   <div class="wrap sec" style="padding-top:28px"><div class="sec-head"><h2>개월수별 육아 필수템. <span class="soft">0개월부터 36개월까지.</span></h2></div>${monthsRow(bo.m!=null?stageOf(bo.m).id:"")}</div>
   ${homeSnacks()}
   ${homeWhen()}
-  <div class="wrap sec"><div class="sec-head"><h2>이번 달 핫템. <span class="soft">엄빠들이 제일 많이 담았어요.</span> <span class="tag">예시</span></h2><a href="${U("hot")}">전체 순위 보기 ›</a></div><div class="tiles">${hotTop}</div></div>
+  <div class="wrap sec"><div class="sec-head"><h2>이번 달 핫템. <span class="soft">카테고리별 1위.</span></h2><a href="${U("hot")}">전체 순위 보기 ›</a></div><p class="hot-note">${HOT_NOTE}</p>${cpNote()}<div class="hot-row">${hotTop}</div></div>
   <div class="wrap sec"><div class="sec-head"><h2>엄빠 커뮤니티. <span class="soft">혼자 고민하지 마세요.</span></h2><a href="${U("free")}">커뮤니티 가기 ›</a></div><div class="tiles" id="home-comm"></div></div>
   <div class="wrap sec"><a class="sos-banner" href="${U("sos")}"><b>응급처치, 미리 봐두세요.</b><span>아기 기도막힘 하임리히법, 열날 때 응급실 가야 하는 경우, 영아 심폐소생술을 정리했어요.</span><i>지금 보기</i></a></div>
   ${faqSec("home","초보 엄빠가 자주 묻는 질문.")}`;
@@ -149,14 +149,24 @@ function viewGuide(st){
 }
 
 /* ===== 화면: 핫템 ===== */
+const HOT_ICON={"젖병·수유":"🍼","기저귀":"🧷","이유식":"🥣","장난감":"🧸","책":"📚","외출":"🚼"};
+const HOT_NOTE="쿠팡 육아 카테고리 인기 상품·리뷰를 바탕으로 달달베이비가 고른 추천 리스트예요. 가격은 바뀔 수 있어요.";
+const hotName=h=>h.b+" "+h.n;
+const hotLink=h=>COUPANG_LINKS["hot-"+hotName(h)]||"https://www.coupang.com/np/search?q="+encodeURIComponent(hotName(h));
+const hotThumb=(c,h)=>`<div class="hot-img" aria-hidden="true"><span>${HOT_ICON[c]||"🎁"}</span>${h.image?`<img src="${esc(h.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:""}</div>`;
+function hotCard(c,h,i,cat){
+  return `<article class="hot${i===0&&!cat?" first":""}"><span class="medal">${i+1}위</span>${hotThumb(c,h)}
+  <div class="hot-info">${cat?`<span class="hot-cat">${esc(c)}</span>`:""}<p class="hot-brand">${esc(h.b)}</p><h3>${esc(h.n)}</h3>
+  <p class="price num">${h.p?won(h.p):`<span class="muted">쿠팡에서 가격 확인</span>`}</p><p class="why">${esc(h.why)}</p></div>
+  <a class="btn pri" href="${hotLink(h)}" target="_blank" rel="sponsored noopener">쿠팡에서 보기</a></article>`;
+}
 function viewHot(){
   const l=HOT[S.hotCat];
-  const dl=d=>d==="NEW"?`<span class="delta nw">NEW</span>`:d==="="?`<span class="delta">유지</span>`:d.startsWith("+")?`<span class="delta up">▲ ${d.slice(1)}</span>`:`<span class="delta dn">▼ ${d.slice(1)}</span>`;
-  return `<div class="wrap sec" style="padding-top:40px"><div class="sec-head"><h1 class="h-page">요즘 육아템 추천, 이번 달 핫템 TOP 3. <span class="soft">최근 30일 기준.</span> <span class="tag">예시 데이터</span></h1></div>
+  return `<div class="wrap sec" style="padding-top:40px"><div class="sec-head"><h1 class="h-page">요즘 육아템 추천, 이번 달 핫템 TOP 3.</h1></div>
+  <p class="hot-note">${HOT_NOTE}</p>
   ${cpNote()}
   <div class="filters">${Object.keys(HOT).map(c=>`<button class="chip${c===S.hotCat?" on":""}" data-hotcat="${esc(c)}">${esc(c)}</button>`).join("")}</div>
-  <div class="podium">${l.map((h,i)=>`<article class="hot${i===0?" first":""}">${dl(h.d)}<span class="medal">${i+1}위</span><h3>${esc(h.n)}</h3><p>${esc(h.why)}</p><div class="hot-stat"><b class="price num">${won(h.p)}</b> · ${esc(h.s)}</div><a class="btn pri" style="margin-top:auto" href="${COUPANG_LINKS["hot-"+h.n]||"https://www.coupang.com/np/search?q="+encodeURIComponent(h.n)}" target="_blank" rel="sponsored noopener">쿠팡에서 보기</a></article>`).join("")}</div>
-  <p class="muted" style="font-size:13px;margin-top:16px">순위는 예시예요. 실제 서비스에서는 쿠팡 파트너스 API의 카테고리별 베스트 상품과 사이트 내 클릭 수를 합쳐 매달 자동으로 갱신할 수 있어요.</p></div>
+  <div class="podium">${l.map((h,i)=>hotCard(S.hotCat,h,i)).join("")}</div></div>
   ${faqSec("hot","육아템 자주 묻는 질문.")}${related("hot")}`;
 }
 

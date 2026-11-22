@@ -94,19 +94,19 @@ const COUPANG_LINKS = {
   "hot-유팡 UV 젖병소독기": "https://link.coupang.com/a/iSs6ONccvc",  // 유팡 시그니처2 플러스 UP920A 348,000원
   "hot-보르르 분유포트": "https://link.coupang.com/a/iSs7RdRZim",  // 보르르 출수형 분유포트 B31 169,000원
   "hot-하기스 네이처메이드 밴드형 기저귀 1단계": "https://link.coupang.com/a/iSs9UzdKZE",  // 하기스 NEW 네이처메이드 밴드형 1단계 198매 53,940원
-  "hot-팸퍼스 베이비드라이 팬티형 기저귀 4단계": "https://link.coupang.com/a/iStew7zafI",  // 데코마당 유로 팸퍼스 4단계 70매 37,800원 (팬티형 4단계 카탈로그 없음)
+  "hot-팸퍼스 유로 팸퍼스 기저귀 4단계 70매": "https://link.coupang.com/a/iStew7zafI",  // 데코마당 유로 팸퍼스 기저귀, 4단계, 70매 - 밴드형 37,800원
   "hot-베베숲 오리진 유아물티슈 캡형": "https://link.coupang.com/a/iStih5ohi0",  // 베베숲 오리진 유아물티슈 캡형 100매 10개 12,900원
   "hot-베베락 실리콘 흡착 식판": "https://link.coupang.com/a/iStjuOhP9o",  // 베베락 포네르 플래티넘 실리콘 흡착식판+스푼 세트 19,800원
   "hot-글라스락 베이비 이유식 보관용기": "https://link.coupang.com/a/iStkRyX93I",  // 글라스락 베이비 눈금 이유식 용기 3p+3p 270ml 24,240원
   "hot-마더케이 실리콘 이유식 스푼": "https://link.coupang.com/a/iStmzXjtBc",  // 마더케이 허그 이유식 스푼 세트 1+2단계 11,000원
-  "hot-타이니러브 플레이짐": "https://link.coupang.com/a/iStoIVPzQi",  // 타이니러브 터미 타임 메도우 모빌 47,480원 (플레이짐 카탈로그 없음)
+  "hot-타이니러브 터미 타임 메도우 모빌": "https://link.coupang.com/a/iStoIVPzQi",  // 타이니러브 터미 타임 메도우 모빌 47,480원
   "hot-피셔프라이스 걸음마 보조기": "https://link.coupang.com/a/iStp5lvz7Q",  // 피셔 프라이스 어서 라이온군의 뮤지컬 워커 72,310원
   "hot-레고 듀플로 브릭 박스": "https://link.coupang.com/a/iStrnCRNW8",  // 레고 10914 듀플로 디럭스 브릭 박스 60,030원
   "hot-한림출판사 달님 안녕": "https://link.coupang.com/a/iStsupzg60",  // 달님 안녕 한림출판사 11,700원
   "hot-보림 사과가 쿵!": "https://link.coupang.com/a/iSttEuG9bo",  // 사과가 쿵! 보림 11,700원
   "hot-핑크퐁 사운드북 인기 동요": "https://link.coupang.com/a/iStuSlAKVU",  // 핑크퐁 사운드북 16,000원
-  "hot-싸이벡스 클라우드 T i-Size 바구니 카시트": "https://link.coupang.com/a/iStwLyTXhs",  // 순성 캐리 신생아 바구니 카시트 205,000원 (싸이벡스 검색 제한)
-  "hot-부가부 버터플라이 휴대용 유모차": "https://link.coupang.com/a/iStzS00hy0",  // 조이 파르셀 LX 시그니처 휴대용 유모차 549,000원 (부가부 버터플라이 카탈로그 없음)
+  "hot-순성 캐리 신생아 바구니 카시트": "https://link.coupang.com/a/iStwLyTXhs",  // 순성 캐리 신생아 바구니 카시트 205,000원
+  "hot-조이 파르셀 LX 시그니처 휴대용 유모차": "https://link.coupang.com/a/iStzS00hy0",  // 조이 파르셀 LX 시그니처 휴대용 유모차 549,000원
   "hot-포그내 아기띠": "https://link.coupang.com/a/iStBcrAXLg",  // 포그내 맥스 플로우 라이트 올인원 아기띠 539,550원
 };
 
@@ -297,11 +297,12 @@ const SOS = [
    image: 상품 사진 주소(쿠팡 파트너스 링크 만들기에서 받은 이미지 주소). 비워두면 기본 아이콘이 보여요.
    쿠팡 파트너스 링크는 COUPANG_LINKS["hot-브랜드 상품명"]에 넣어요. 없으면 같은 이름으로 쿠팡 검색이 열려요. */
 /* 2026-11 쿠팡 파트너스 상품검색에서 실제 판매 상품·가격·이미지로 채움.
-   파트너스 카탈로그에 같은 모델이 없어 가장 가까운 실제 판매 상품으로 연결한 항목:
-   - 팸퍼스 베이비드라이 팬티형 4단계 → 데코마당 유로 팸퍼스 4단계 70매
-   - 타이니러브 플레이짐 → 타이니러브 터미 타임 메도우 모빌
-   - 싸이벡스 클라우드 T → 순성 캐리 신생아 바구니 카시트 (싸이벡스는 검색 제한 브랜드)
-   - 부가부 버터플라이 → 조이 파르셀 LX 시그니처 휴대용 유모차 */
+   아래 4개는 파트너스 카탈로그에 같은 모델이 없어 가장 가까운 실제 판매 상품으로 연결했고,
+   카드 이름·추천 이유도 연결된 상품에 맞춰 통일했어요(사진과 링크가 가리키는 상품과 같은 이름).
+   - 기저귀: 데코마당 유로 팸퍼스 기저귀, 4단계, 70매 - 밴드형
+   - 장난감: 타이니러브 터미 타임 메도우 모빌
+   - 외출(카시트): 순성 캐리 신생아 바구니 카시트
+   - 외출(유모차): 조이 파르셀 LX 시그니처 휴대용 유모차 */
 const HOT = {
  "젖병·수유":[
   {b:"마더케이",n:"베이직 PPSU 젖병 트윈팩 180ml",p:31610,why:"가볍고 열탕 소독이 돼서 첫 젖병으로 가장 많이 골라요.",image:"https://thumbnail3.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/6599463253241953-919b623c-fd5b-4788-a6fd-681bb1b56b80.jpg"},
@@ -309,14 +310,14 @@ const HOT = {
   {b:"보르르",n:"분유포트",p:169000,why:"물을 끓여 원하는 온도로 유지해 새벽 분유 타기가 빨라져요.",image:"https://t2c.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2026/05/07/14/1/c944260e-c053-4636-8479-91be5fceb0a9.png"}],
  "기저귀":[
   {b:"하기스",n:"네이처메이드 밴드형 기저귀 1단계",p:53940,why:"신생아 출산준비물로 꾸준히 담기는 기저귀예요.",image:"https://t3c.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2025/09/11/11/6/093f4705-a413-4f81-b52e-53b28e04abe2.png"},
-  {b:"팸퍼스",n:"베이비드라이 팬티형 기저귀 4단계",p:37800,why:"뒤집고 기기 시작하면 갈아입히기 쉬운 팬티형이 편해요.",image:"https://thumbnail5.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/9486/94f6ec34ffd88bb2f3374948c712f1254cb4e28f09f96d8015e30715a68b.jpg"},
+  {b:"팸퍼스",n:"유로 팸퍼스 기저귀 4단계 70매",p:37800,why:"4단계 70매 대용량 밴드형이라 금방 크는 시기에 자주 사지 않아도 돼요.",image:"https://thumbnail5.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/9486/94f6ec34ffd88bb2f3374948c712f1254cb4e28f09f96d8015e30715a68b.jpg"},
   {b:"베베숲",n:"오리진 유아물티슈 캡형",p:12900,why:"도톰하고 캡형이라 마르지 않아 기저귀와 함께 담아요.",image:"https://t3c.coupangcdn.com/thumbnails/remote/492x492ex/image/1025_amir_coupang_oct_80k/ca12/9b88a0325a006bc9b76a6d37ced4db41f68d8e9a785b938f18ec4e261202.jpg"}],
  "이유식":[
   {b:"베베락",n:"실리콘 흡착 식판",p:19800,why:"상에 붙어서 자기주도 이유식 때 엎을 걱정이 줄어요.",image:"https://t1c.coupangcdn.com/thumbnails/remote/492x492ex/image/rs_quotation_api/cttll4ch/15aa4366eed14b25a9d082b915bb3a1b.jpg"},
   {b:"글라스락",n:"베이비 이유식 보관용기",p:24240,why:"유리라 전자레인지 데우기와 열탕 소독이 돼요.",image:"https://thumbnail4.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/e37c/789cfbb098a94b08c9e370e163543b8a5bf9fd2dde78c6fb3f67fe0ab50c.jpg"},
   {b:"마더케이",n:"실리콘 이유식 스푼",p:11000,why:"말랑한 실리콘이라 첫 숟가락 연습에 잇몸이 안전해요.",image:"https://t5a.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/167902163177957-2c7df953-a545-404b-b934-342452341b61.jpg"}],
  "장난감":[
-  {b:"타이니러브",n:"플레이짐",p:47480,why:"누워서 보고, 차고, 잡는 0~6개월 대표 선물이에요.",image:"https://thumbnail2.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2021/07/06/10/2/6d494c52-b796-4cec-b18a-326db0075c8d.jpg"},
+  {b:"타이니러브",n:"터미 타임 메도우 모빌",p:47480,why:"터미타임·유모차 어디서나 걸어두는 0~6개월 국민 모빌이에요.",image:"https://thumbnail2.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2021/07/06/10/2/6d494c52-b796-4cec-b18a-326db0075c8d.jpg"},
   {b:"피셔프라이스",n:"걸음마 보조기",p:72310,why:"앉아서 놀다가 잡고 서서 밀며 걷기까지 오래 써요.",image:"https://t3a.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/f5db/e23e5cac48471bff50d912274468b07860ca967c8c12e00d36b0f72e7696.jpg"},
   {b:"레고 듀플로",n:"브릭 박스",p:60030,why:"아기 손에 맞는 큰 블록이라 돌 이후 오래 가지고 놀아요.",image:"https://t1c.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/32375591485246-03a941ce-73b6-4a33-9941-329fb7849a83.jpg"}],
  "책":[
@@ -324,8 +325,8 @@ const HOT = {
   {b:"보림",n:"사과가 쿵!",p:11700,why:"반복되는 소리 말로 6개월부터 까르르 웃는 책이에요.",image:"https://t4c.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/e4c4/c8600ad3d932a7b0aa02b38f288fe467a3d8ce547050f264e26e96e1b2d1.jpg"},
   {b:"핑크퐁",n:"사운드북 인기 동요",p:16000,why:"버튼을 누르면 노래가 나와 혼자서도 잘 놀아요.",image:"https://t2c.coupangcdn.com/thumbnails/remote/492x492ex/image/1025_amir_coupang_oct_80k/a961/e8b9653a8863dafc5b149ad8d5b942708ae666275f84add01dbb33b2578c.jpg"}],
  "외출":[
-  {b:"싸이벡스",n:"클라우드 T i-Size 바구니 카시트",p:205000,why:"퇴원 날부터 쓰는 신생아 카시트로 많이 찾아요.",image:"https://thumbnail2.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2026/07/31/14/5/4b4b958a-cc29-464a-bd9b-058235a1e7b3.jpg"},
-  {b:"부가부",n:"버터플라이 휴대용 유모차",p:549000,why:"한 손으로 접히고 가벼워 두 번째 유모차로 인기예요.",image:"https://thumbnail6.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/ff45/8c55c5d7d8b92cdaafd0b786989d20ecc8fc173ea0476e564cafec8cf5c3.png"},
+  {b:"순성",n:"캐리 신생아 바구니 카시트",p:205000,why:"가볍고 유모차 호환이 편해 퇴원 날부터 많이 쓰는 바구니 카시트예요.",image:"https://thumbnail2.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2026/07/31/14/5/4b4b958a-cc29-464a-bd9b-058235a1e7b3.jpg"},
+  {b:"조이",n:"파르셀 LX 시그니처 휴대용 유모차",p:549000,why:"가볍고 한 손 폴딩이 편해 두 번째 휴대용 유모차로 인기예요.",image:"https://thumbnail6.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/ff45/8c55c5d7d8b92cdaafd0b786989d20ecc8fc173ea0476e564cafec8cf5c3.png"},
   {b:"포그내",n:"아기띠",p:539550,why:"신생아부터 쓸 수 있고 허리 벨트가 편해 많이 써요.",image:"https://t5c.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/6338/69ff76a8222accad90c897210d29b66568626b56dcb6386c88c5900e49b6.jpg"}]
 };
 
